@@ -41,11 +41,12 @@ class PandaGroupController extends Controller
      * @param PostPandaGroupRequest $request
      * @param PandaGroup|null $pandaGroup
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function store(PostPandaGroupRequest $request, PandaGroup $pandaGroup = null)
     {
-        if ($pandaGroup === null) {
-            $group = $this->groupService->updateGroup([
+        if ($pandaGroup !== null) {
+            $group = $this->groupService->updateGroup($pandaGroup->id, [
                 'name' => $request->name,
             ]);
         } else {
@@ -55,7 +56,7 @@ class PandaGroupController extends Controller
         }
 
         if ($request->users !== null) {
-            $this->groupService->addUSersToGroup($request->users, $group);
+            $this->groupService->addUsersToGroup($request->users, $group);
         }
 
         return redirect()

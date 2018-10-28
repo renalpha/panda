@@ -49,10 +49,10 @@ class PandaGroupService
     }
 
     /**
-     * @param $params
-     * @return int
+     * @param array $params
+     * @return PandaGroup
      */
-    public function createGroup($params): int
+    public function createGroup(array $params): PandaGroup
     {
         $group = $this->groupRepository->create($params);
 
@@ -62,9 +62,9 @@ class PandaGroupService
     /**
      * @param int $id
      * @param array $params
-     * @return int
+     * @return PandaGroup
      */
-    public function updateGroup(int $id, array $params): int
+    public function updateGroup(int $id, array $params): PandaGroup
     {
         $group = $this->groupRepository->update($params, $id);
 
