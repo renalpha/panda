@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostPandaGroupRequest;
 use App\Services\PandaGroupService;
 use Domain\Entities\PandaGroup\PandaGroup;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 
 /**
@@ -43,17 +44,11 @@ class PandaGroupController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      */
-    public function store(PostPandaGroupRequest $request, PandaGroup $pandaGroup = null)
+    public function store(PostPandaGroupRequest $request, PandaGroup $pandaGroup = null): RedirectResponse
     {
-        if ($pandaGroup !== null) {
-            $group = $this->groupService->updateGroup($pandaGroup->id, [
-                'name' => $request->name,
-            ]);
-        } else {
-            $group = $this->groupService->createGroup([
-                'name' => $request->name,
-            ]);
-        }
+        $group = $this->groupService->saveGroup([
+            'name' => $request->name,
+        ], $pandaGroup->id ?? null);
 
         if ($request->users !== null) {
             $this->groupService->addUsersToGroup($request->users, $group);

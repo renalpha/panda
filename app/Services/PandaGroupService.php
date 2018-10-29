@@ -70,4 +70,18 @@ class PandaGroupService
 
         return $group->save();
     }
+
+    /**
+     * @param array $params
+     * @param int|null $id
+     * @return PandaGroup
+     */
+    public function saveGroup(array $params, int $id = null)
+    {
+        if ($id !== null) {
+            return $this->updateGroup($id, $params);
+        } else {
+            return $this->createGroup($params);
+        }
+    }
 }

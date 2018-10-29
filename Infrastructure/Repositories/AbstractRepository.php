@@ -102,16 +102,16 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
     }
 
     /*
- * Get Lists
- */
+     * Get Lists
+     */
     public function pluck($column = ['*'], $key = null)
     {
         return $this->model->pluck($column, $key);
     }
 
     /*
- * Get Lists
- */
+     * Get Lists
+     */
     public function get($filters = null)
     {
         return $this->model->get();
