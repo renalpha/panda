@@ -9,7 +9,6 @@ use Domain\Services\PandaGroupService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
 
-
 /**
  * Class PandaGroupController
  * @package App\Http\Controllers
