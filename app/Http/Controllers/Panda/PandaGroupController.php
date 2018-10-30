@@ -30,6 +30,9 @@ class PandaGroupController extends Controller
         $this->groupService = $groupService;
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $groups = $this->groupService->getGroupsByAuthenticatedUser();
@@ -55,12 +58,20 @@ class PandaGroupController extends Controller
     }
 
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('pandaGroup.create');
+    }
+
+    /**
      * @param PandaGroup $pandaGroup
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(PandaGroup $pandaGroup)
     {
-        return view();
+        return view('pandaGroup.edit', ['group' => $pandaGroup]);
     }
 
     /**
@@ -73,6 +84,7 @@ class PandaGroupController extends Controller
     {
         $group = $this->groupService->saveGroup([
             'name' => $request->name,
+            'label' => str_slug($request->name),
         ], $pandaGroup->id ?? null);
 
         if ($request->users !== null) {
@@ -121,8 +133,9 @@ class PandaGroupController extends Controller
 
         return Datatables::of($groups)
             ->addColumn('name', function ($row) {
-                return $row->name;
+                return '<a href="' . route('group.show', ['label' => $row->label]) . '">' . $row->name . '</a>';
             })
+            ->rawColumns(['name'])
             ->make(true);
     }
 }

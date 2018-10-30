@@ -13,6 +13,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+                        <a href="{{ route('group.new') }}" class="btn btn-primary float-right">Create Group</a>
 
                         <p>You are {{ auth()->user()->name }}</p>
                         <table class="table table-bordered" id="groups-table">

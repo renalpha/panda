@@ -27,6 +27,10 @@ Route::group(['middleware' => 'verified'], function () {
     Route::group(['namespace' => 'Panda'], function () {
         // Get the Panda group
         Route::get('group/index', 'PandaGroupController@index')->name('group.index');
+        Route::get('group/new', 'PandaGroupController@create')->name('group.new');
+        Route::post('group/new', 'PandaGroupController@store')->name('group.new.store');
+        Route::get('group/edit/{id}', 'PandaGroupController@edit')->name('group.edit');
+        Route::post('group/edit/{id}', 'PandaGroupController@store')->name('group.edit.store');
         Route::get('group/{label}', 'PandaGroupController@show')->name('group.show');
     });
     Route::group(['prefix' => 'profile'], function () {
