@@ -10,7 +10,6 @@ use Domain\Entities\PandaGroup\PandaGroup;
  */
 class PandaGroupRepository extends AbstractRepository
 {
-
     /**
      * PandaGroupRepository constructor.
      * @param PandaGroup $model

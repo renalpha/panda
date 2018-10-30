@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostPandaGroupRequest;
-use App\Services\PandaGroupService;
+use App\Domain\Services\PandaGroupService;
 use Domain\Entities\PandaGroup\PandaGroup;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;

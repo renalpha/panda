@@ -117,11 +117,19 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         return $this->model->get();
     }
 
+    /**
+     * @param $amount
+     * @return mixed
+     */
     public function paginate($amount)
     {
         return $this->model->paginate($amount);
     }
 
+    /**
+     * @param $query
+     * @return mixed
+     */
     public function search($query)
     {
         try {
@@ -131,11 +139,17 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function first()
     {
         return $this->model->first();
     }
 
+    /**
+     * @return mixed
+     */
     public function firstOrFail()
     {
         return $this->model->firstOrFail();
@@ -182,36 +196,66 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         return $this;
     }
 
+    /**
+     * @param $column
+     * @return $this
+     */
     public function whereNull($column)
     {
         $this->model = $this->model->whereNull($column);
         return $this;
     }
 
+    /**
+     * @param $column
+     * @return $this
+     */
     public function whereNotNull($column)
     {
         $this->model = $this->model->whereNotNull($column);
         return $this;
     }
 
+    /**
+     * @param $column
+     * @param string $direction
+     * @return $this
+     */
     public function orderBy($column, $direction = 'asc')
     {
         $this->model = $this->model->orderBy($column, $direction);
         return $this;
     }
 
+    /**
+     * @param $column
+     * @param $condition
+     * @param $value
+     * @return $this
+     */
     public function where($column, $condition, $value)
     {
         $this->model = $this->model->where($column, $condition, $value);
         return $this;
     }
 
+    /**
+     * @param $column
+     * @param $condition
+     * @param $value
+     * @return $this
+     */
     public function orWhere($column, $condition, $value)
     {
         $this->model = $this->model->orWhere($column, $condition, $value);
         return $this;
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @return $this
+     */
     public function whereBetween($column, $value)
     {
         $this->model = $this->model->whereBetween($column, $value);
@@ -224,18 +268,31 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         return $this;
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @return $this
+     */
     public function whereIn($column, $value)
     {
         $this->model = $this->model->whereIn($column, $value);
         return $this;
     }
 
+    /**
+     * @param $column
+     * @return $this
+     */
     public function groupBy($column)
     {
         $this->model = $this->model->groupBy($column);
         return $this;
     }
 
+    /**
+     * @param null $column
+     * @return $this
+     */
     public function distinct($column = null)
     {
         $this->model = $this->model->distinct($column);
@@ -255,21 +312,38 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
         return $this;
     }
 
+    /**
+     * @param $key
+     * @return mixed
+     */
     public function getAttribute($key)
     {
         return $this->model->getAttribute(snake_case($key));
     }
 
+    /**
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
     public function setAttribute($key, $value)
     {
         return $this->model->setAttribute(snake_case($key), $value);
     }
 
+    /**
+     * @param int $state
+     * @return mixed
+     */
     public function active($state = 1)
     {
         return $this->model->where('active', '=', $state);
     }
 
+    /**
+     * @param int $id
+     * @return int
+     */
     public function findBy(int $id)
     {
         return $this->model->findBy($id);

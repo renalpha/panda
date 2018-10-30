@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Domain\Services;
 
 use Domain\Entities\PandaGroup\PandaGroup;
 use Domain\Entities\PandaGroup\PandaGroupUser;
@@ -76,7 +76,7 @@ class PandaGroupService
      * @param int|null $id
      * @return PandaGroup
      */
-    public function saveGroup(array $params, int $id = null)
+    public function saveGroup(array $params, int $id = null): PandaGroup
     {
         if ($id !== null) {
             return $this->updateGroup($id, $params);
