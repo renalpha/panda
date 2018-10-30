@@ -30,11 +30,20 @@ class PandaGroupController extends Controller
         $this->groupService = $groupService;
     }
 
+    public function index()
+    {
+        $groups = $this->groupService->getGroupsByAuthenticatedUser();
+
+        return view('pandaGroup.index', [
+            'groups' => $groups,
+        ]);
+    }
+
     /**
      * Get group by label.
      *
      * @param string $label
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View|void
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(string $label)
     {
@@ -73,10 +82,11 @@ class PandaGroupController extends Controller
         $request->session()->flash('status', $pandaGroup->id !== null ? 'Group has successfully been updated!' : 'Group has successfully been created!');
 
         return redirect()
-            ->to('/');
+            ->route('group.show', ['label' => $group->label]);
     }
 
     /**
+     * AJAX Datatables
      * Get users by group.
      *
      * @param string $label
@@ -92,6 +102,26 @@ class PandaGroupController extends Controller
             })
             ->addColumn('email', function ($row) {
                 return $row->user->email;
+            })
+            ->addColumn('points', function ($row) {
+                return $row->user->points->count();
+            })
+            ->make(true);
+    }
+
+    /**
+     * AJAX Datatables
+     * Get groups by user.
+     *
+     * @return mixed
+     */
+    public function getGroupsByUser()
+    {
+        $groups = $this->groupService->getGroupsByAuthenticatedUser();
+
+        return Datatables::of($groups)
+            ->addColumn('name', function ($row) {
+                return $row->name;
             })
             ->make(true);
     }

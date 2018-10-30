@@ -17,4 +17,12 @@ class PandaUser extends AggregateRoot
      * @var string
      */
     protected $table = 'users';
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function points()
+    {
+        return $this->hasMany(new PandaUserPoint(), 'user_id');
+    }
 }

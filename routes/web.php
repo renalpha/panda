@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 
 Auth::routes(['verify' => true]);
 
@@ -23,11 +21,13 @@ Auth::routes(['verify' => true]);
 Route::group(['middleware' => 'verified'], function () {
     Route::group(['prefix' => 'ajax'], function () {
         Route::get('group/{label}/members', 'Panda\PandaGroupController@getUsersOverviewGroup')->name('ajax.group.members');
+        Route::get('group/index', 'Panda\PandaGroupController@getGroupsByUser')->name('ajax.group.index');
     });
 
     Route::group(['namespace' => 'Panda'], function () {
         // Get the Panda group
-        Route::get('group/{label}', 'PandaGroupController@show');
+        Route::get('group/index', 'PandaGroupController@index')->name('group.index');
+        Route::get('group/{label}', 'PandaGroupController@show')->name('group.show');
     });
     Route::group(['prefix' => 'profile'], function () {
         Route::get('/', 'Auth\UserProfileController@show')->name('profile');

@@ -97,4 +97,12 @@ class PandaGroupService
         }
         return $group;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupsByAuthenticatedUser()
+    {
+        return $this->groupRepository->getGroupsByAuthenticatedUser();
+    }
 }
