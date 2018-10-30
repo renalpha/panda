@@ -3,6 +3,7 @@
 namespace Domain\Entities\PandaUser;
 
 use Domain\Common\AggregateRoot;
+use Domain\Entities\PandaGroup\PandaGroup;
 
 /**
  * Class PandaUser
@@ -10,5 +11,10 @@ use Domain\Common\AggregateRoot;
  */
 class PandaUser extends AggregateRoot
 {
-
+    /**
+     * Database table.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 }

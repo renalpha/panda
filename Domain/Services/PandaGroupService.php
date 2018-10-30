@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Services;
+namespace Domain\Services;
 
 use Domain\Entities\PandaGroup\PandaGroup;
 use Domain\Entities\PandaGroup\PandaGroupUser;
@@ -8,14 +8,14 @@ use Infrastructure\Repositories\PandaGroupRepository;
 
 /**
  * Class PandaGroupService
- * @package App\Services
+ * @package Domain\Services
  */
 class PandaGroupService
 {
     /**
      * @var PandaGroupRepository $groupRepository
      */
-    private $groupRepository;
+    public $groupRepository;
 
     /**
      * PandaGroupService constructor.
@@ -83,5 +83,18 @@ class PandaGroupService
         } else {
             return $this->createGroup($params);
         }
+    }
+
+    /**
+     * @param $label
+     */
+    public function getGroupByLabelAndAuthenticatedUser($label)
+    {
+        $group = $this->groupRepository->getGroupByLabel($label)->firstOrFail();
+
+        if ($group->findUserById(auth()->user()->id) === false) {
+            return abort(404);
+        }
+        return $group;
     }
 }

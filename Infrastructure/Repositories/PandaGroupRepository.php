@@ -18,4 +18,14 @@ class PandaGroupRepository extends AbstractRepository
     {
         parent::__construct($model);
     }
+
+    /**
+     * @param string $label
+     * @return $this
+     */
+    public function getGroupByLabel(string $label): self
+    {
+        $this->model->where('label', $label);
+        return $this;
+    }
 }
