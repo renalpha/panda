@@ -37,8 +37,9 @@ class PandaGroupService
         try {
             collect($users)->each(function ($user) use ($group) {
                 PandaGroupUser::create([
-                    'user_id' => $user,
+                    'user_id' => $user['user_id'],
                     'panda_group_id' => $group->id,
+                    'panda_group_role_id' => $user['role_id'],
                 ]);
             });
 
@@ -56,7 +57,9 @@ class PandaGroupService
     {
         $group = $this->groupRepository->create($params);
 
-        return $group->save();
+        $group->save();
+
+        return $group;
     }
 
     /**
@@ -68,7 +71,9 @@ class PandaGroupService
     {
         $group = $this->groupRepository->update($params, $id);
 
-        return $group->save();
+        $group->save();
+
+        return $group;
     }
 
     /**
@@ -87,6 +92,7 @@ class PandaGroupService
 
     /**
      * @param $label
+     * @return mixed|void
      */
     public function getGroupByLabelAndAuthenticatedUser($label)
     {
@@ -95,6 +101,7 @@ class PandaGroupService
         if ($group->findUserById(auth()->user()->id) === false) {
             return abort(404);
         }
+
         return $group;
     }
 

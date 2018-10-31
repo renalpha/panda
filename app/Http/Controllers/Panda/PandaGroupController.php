@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panda;
 use App\Http\Requests\PostPandaGroupRequest;
 use DataTables;
 use Domain\Entities\PandaGroup\PandaGroup;
+use Domain\Entities\PandaGroup\PandaGroupRole;
 use Domain\Services\PandaGroupService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Controller;
@@ -86,18 +87,18 @@ class PandaGroupController extends Controller
             'label' => str_slug($request->name),
         ], $pandaGroup->id ?? null);
 
-        if ($request->users !== null) {
-            $this->groupService->addUsersToGroup($request->users, $group);
-        }
+        $users = $request->users ?? [['user_id' => auth()->user()->id, 'role_id' => PandaGroupRole::where('label', 'admin')->first()->id]];
 
-        $request->session()->flash('status', $pandaGroup->id !== null ? 'Group has successfully been updated!' : 'Group has successfully been created!');
+        $this->groupService->addUsersToGroup($users, $group);
+
+        $request->session()->flash('status', isset($pandaGroup->id) && $pandaGroup->id !== null ? 'Group has successfully been updated!' : 'Group has successfully been created!');
 
         return redirect()
             ->route('group.show', ['label' => $group->label]);
     }
 
     /**
-     * AJAX Datatables
+     * AJAX DataTables
      * Get users by group.
      *
      * @param string $label
@@ -121,7 +122,7 @@ class PandaGroupController extends Controller
     }
 
     /**
-     * AJAX Datatables
+     * AJAX DataTables
      * Get groups by user.
      *
      * @return mixed
@@ -134,7 +135,13 @@ class PandaGroupController extends Controller
             ->addColumn('name', function ($row) {
                 return '<a href="' . route('group.show', ['label' => $row->label]) . '">' . $row->name . '</a>';
             })
-            ->rawColumns(['name'])
+            ->addColumn('manage', function ($row) {
+                if (auth()->user()->can('group.manage')) {
+                    return '<a href="' . route('group.edit', ['id' => $row->id]) . '" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="' . route('group.remove', ['id' => $row->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
+                }
+            })
+            ->rawColumns(['name', 'manage'])
             ->make(true);
     }
 }

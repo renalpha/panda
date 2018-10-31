@@ -18,6 +18,11 @@ class PandaGroupUser extends Pivot
     protected $table = 'panda_groups_users';
 
     /**
+     * @var bool
+     */
+    public $timestamps = false;
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo

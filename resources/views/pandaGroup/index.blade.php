@@ -20,6 +20,7 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Manage</th>
                             </tr>
                             </thead>
                         </table>
@@ -39,6 +40,7 @@
                 ajax: '{!! route('ajax.group.index') !!}',
                 columns: [
                     {data: 'name', name: 'name'},
+                    {data: 'manage', name: 'manage'},
                 ]
             });
         });

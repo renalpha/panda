@@ -25,7 +25,7 @@ class PandaGroupRepository extends AbstractRepository
      */
     public function getGroupByLabel(string $label): self
     {
-        $this->model->where('label', $label);
+        $this->model = $this->model->where('label', '=', $label);
         return $this;
     }
 

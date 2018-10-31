@@ -17,6 +17,7 @@ class CreatePandaGroupsTable extends Migration
             $table->increments('id');
             $table->string('name', 255);
             $table->string('label', 255);
+            $table->softDeletes();
             $table->timestamps();
         });
 

@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="/group/index">Group</a></li>
+    <li class="breadcrumb-item"><a href="/group/{{ $group->label }}">{{ $group->name }}</a></li>
+@stop
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">

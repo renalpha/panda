@@ -3,9 +3,8 @@
 namespace Domain\Entities\PandaGroup;
 
 use Domain\Common\AggregateRoot;
-use Domain\Entities\PandaUser\PandaUser;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class PandaGroup
@@ -13,6 +12,14 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  */
 class PandaGroup extends AggregateRoot
 {
+    use SoftDeletes;
+
+    /**
+     * Mass assign variables.
+     * @var array
+     */
+    protected $fillable = ['name', 'label'];
+
     /**
      * @param int $id
      * @return bool
@@ -28,5 +35,23 @@ class PandaGroup extends AggregateRoot
     public function users(): HasMany
     {
         return $this->hasMany(new PandaGroupUser());
+    }
+
+    /**
+     * Set the label value.
+     *
+     * @param $value
+     */
+    public function setLabelAttribute($value): void
+    {
+        if (isset($value)) {
+            if ($value !== $this->label) {
+                // Set slug
+                $this->attributes['label'] = $this->generateIteratedName('label', $value);
+            }
+        } else {
+            // Otherwise empty the slug
+            $this->attributes['label'] = null;
+        }
     }
 }

@@ -61,4 +61,34 @@ abstract class Entity extends Model
     {
         return $this->updatedAt;
     }
+
+    /**
+     * Generates an unique iterated name.
+     *
+     * @param $column
+     * @param $name
+     * @return string
+     */
+    protected function generateIteratedName($column, $name): string
+    {
+        $entity = new $this;
+        try {
+            // Requires soft delete
+            $existing = $entity->withTrashed();
+        } catch (\Exception $e) {
+            $existing = $entity;
+        }
+
+        $existing->where($column, 'LIKE', "{$name}%")
+            ->orderBy($column, 'desc')
+            ->get();
+
+        if ($existing->count() > 0) {
+            $sequence = (int)str_replace($name, '', $existing->first()->{$column});
+            return $name . ($sequence + 1);
+        } else {
+            return $name;
+        }
+
+    }
 }
