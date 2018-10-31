@@ -20,7 +20,10 @@
                         @endif
 
                         <p>You are {{ auth()->user()->name }}</p>
-
+                            <hr/>
+                            <form method="post" action="{{ route('group.edit.store',['id' => $group->id]) }}">
+                                @include('pandaGroup.partials._form')
+                            </form>
                     </div>
                 </div>
             </div>
