@@ -16,9 +16,17 @@ class PandaGroup extends AggregateRoot
 
     /**
      * Mass assign variables.
+     *
      * @var array
      */
     protected $fillable = ['name', 'label'];
+
+    /**
+     * Table name.
+     *
+     * @var string
+     */
+    protected $table = 'panda_groups';
 
     /**
      * @param int $id

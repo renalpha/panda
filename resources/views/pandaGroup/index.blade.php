@@ -20,6 +20,7 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
+                                <th>Members</th>
                                 <th>Manage</th>
                             </tr>
                             </thead>
@@ -40,6 +41,7 @@
                 ajax: '{!! route('ajax.group.index') !!}',
                 columns: [
                     {data: 'name', name: 'name'},
+                    {data: 'members', name: 'members', searchable: false},
                     {data: 'manage', name: 'manage'},
                 ]
             });

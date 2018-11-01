@@ -35,7 +35,13 @@ class PandaGroupService
     public function addUsersToGroup(array $users, PandaGroup $group): bool
     {
         try {
-            collect($users)->each(function ($user) use ($group) {
+            // Filter already existing users before adding to group.
+            collect($users)->filter(function($user) use($group){
+                if(!in_array($user['user_id'], array_column($group->users->toArray(), 'user_id'), true)) {
+                    return true;
+                }
+                return false;
+            })->each(function ($user) use ($group) {
                 PandaGroupUser::create([
                     'user_id' => $user['user_id'],
                     'panda_group_id' => $group->id,
@@ -108,8 +114,19 @@ class PandaGroupService
     /**
      * @return mixed
      */
-    public function getGroupsByAuthenticatedUser()
+    public function groupsByAuthenticatedUser()
     {
-        return $this->groupRepository->getGroupsByAuthenticatedUser();
+        return $this->groupRepository->groupsByAuthenticatedUser();
+    }
+
+    /**
+     * @param PandaGroup $group
+     * @throws \Exception
+     */
+    public function deleteGroupAndUsers(PandaGroup $group): void
+    {
+        $group->users()->delete();
+
+        $group->delete();
     }
 }

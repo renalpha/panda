@@ -31,7 +31,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('group/new', 'PandaGroupController@store')->name('group.new.store');
         Route::get('group/edit/{pandaGroup}', 'PandaGroupController@edit')->name('group.edit');
         Route::post('group/edit/{pandaGroup}', 'PandaGroupController@store')->name('group.edit.store');
-        Route::get('group/remove/{id}', 'PandaGroupController@remove')->name('group.remove');
+        Route::get('group/remove/{pandaGroup}', 'PandaGroupController@remove')->name('group.remove');
         Route::get('group/{label}', 'PandaGroupController@show')->name('group.show');
     });
     Route::group(['prefix' => 'profile'], function () {

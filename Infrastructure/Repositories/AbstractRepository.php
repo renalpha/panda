@@ -348,5 +348,4 @@ abstract class AbstractRepository implements AbstractRepositoryInterface
     {
         return $this->model->findBy($id);
     }
-
 }

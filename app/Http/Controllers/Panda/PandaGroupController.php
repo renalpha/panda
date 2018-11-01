@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Panda;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PostPandaGroupRequest;
 use DataTables;
 use Domain\Entities\PandaGroup\PandaGroup;
 use Domain\Entities\PandaGroup\PandaGroupRole;
 use Domain\Services\PandaGroupService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
 
 /**
  * Class PandaGroupController
@@ -35,7 +36,7 @@ class PandaGroupController extends Controller
      */
     public function index()
     {
-        $groups = $this->groupService->getGroupsByAuthenticatedUser();
+        $groups = $this->groupService->groupsByAuthenticatedUser()->get();
 
         return view('pandaGroup.index', [
             'groups' => $groups,
@@ -71,6 +72,8 @@ class PandaGroupController extends Controller
      */
     public function edit(PandaGroup $pandaGroup)
     {
+        $this->authorize('manage', $pandaGroup);
+
         return view('pandaGroup.edit', ['group' => $pandaGroup]);
     }
 
@@ -95,6 +98,22 @@ class PandaGroupController extends Controller
 
         return redirect()
             ->route('group.show', ['label' => $group->label]);
+    }
+
+    /**
+     * @param Request $request
+     * @param PandaGroup $pandaGroup
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function remove(Request $request, PandaGroup $pandaGroup)
+    {
+        $this->groupService->deleteGroupAndUsers($pandaGroup);
+
+        $request->session()->flash('status', 'Successfully deleted group');
+
+        return redirect()
+            ->back();
     }
 
     /**
@@ -129,17 +148,22 @@ class PandaGroupController extends Controller
      */
     public function getGroupsByUser()
     {
-        $groups = $this->groupService->getGroupsByAuthenticatedUser();
+        $groups = $this->groupService->groupsByAuthenticatedUser()->get();
 
         return Datatables::of($groups)
             ->addColumn('name', function ($row) {
                 return '<a href="' . route('group.show', ['label' => $row->label]) . '">' . $row->name . '</a>';
             })
+            ->addColumn('members', function ($row) {
+                return $row->users->count();
+            })
             ->addColumn('manage', function ($row) {
-                if (auth()->user()->can('group.manage')) {
-                    return '<a href="' . route('group.edit', ['id' => $row->id]) . '" class="btn btn-sm btn-primary">Edit</a>
-                        <a href="' . route('group.remove', ['id' => $row->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
-                }
+//                if (auth()->user()->can('manage', $row)) {
+//                    if (auth()->user()->can('group.manage')) {
+                return '<a href="' . route('group.edit', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-primary">Edit</a>
+                        <a href="' . route('group.remove', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
+//                    }
+//                }
             })
             ->rawColumns(['name', 'manage'])
             ->make(true);

@@ -8,6 +8,11 @@
                     <strong>{{ $errors->first('name') }}</strong>
                 </span>
         @endif
+        @if ($errors->has('label'))
+            <span class="invalid-feedback  d-block" role="alert">
+                    <strong>{{ $errors->first('label') }}</strong>
+                </span>
+        @endif
     </div>
 </div>
 <div class="col-md-4">
