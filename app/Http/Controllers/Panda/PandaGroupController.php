@@ -120,7 +120,7 @@ class PandaGroupController extends Controller
      * Group invitation.
      *
      * @param string $label
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|RedirectResponse|\Illuminate\View\View
      */
     public function invite(string $label)
     {
@@ -137,6 +137,16 @@ class PandaGroupController extends Controller
         }
 
         return view('pandaGroup.invite', ['group' => $group]);
+    }
+
+    public function removeUserFromGroup(Request $request, PandaGroup $pandaGroup, int $userId)
+    {
+        $this->groupService->deleteUsersFromGroup($pandaGroup, [$userId]);
+
+        $request->session()->flash('status', 'Successfully deleted user from group');
+
+        return redirect()
+            ->back();
     }
 
     /**
@@ -160,6 +170,10 @@ class PandaGroupController extends Controller
             ->addColumn('points', function ($row) {
                 return $row->user->points->count();
             })
+            ->addColumn('manage', function ($row) {
+                return '<a href="' . route('group.remove.user', ['pandaGroup' => $row->group, 'id' => $row->user->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
+            })
+            ->rawColumns(['manage'])
             ->make(true);
     }
 

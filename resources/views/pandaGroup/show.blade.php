@@ -2,7 +2,7 @@
 
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="/group/index">Group</a></li>
-    <li class="breadcrumb-item"><a href="/group/{{ $group->label }}">{{ $group->name }}</a></li>
+    <li class="breadcrumb-item">{{ $group->name }}</li>
 @stop
 
 @section('content')
@@ -43,6 +43,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Points</th>
+                                <th>Manage</th>
                             </tr>
                             </thead>
                         </table>
@@ -63,7 +64,8 @@
                 columns: [
                     {data: 'name', name: 'name'},
                     {data: 'email', name: 'email'},
-                    {data: 'points', name: 'points'}
+                    {data: 'points', name: 'points'},
+                    {data: 'manage', name: 'manage'}
                 ]
             });
         });

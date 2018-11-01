@@ -29,4 +29,12 @@ class PandaGroupUser extends Pivot
     {
         return $this->belongsTo(new PandaUser());
     }
+
+    /**
+     * @return BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(new PandaGroup(), 'panda_group_id', 'id');
+    }
 }

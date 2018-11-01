@@ -134,7 +134,22 @@ class PandaGroupService
      */
     public function deleteGroupAndUsers(PandaGroup $group): void
     {
-        $group->users()->delete();
+        $this->deleteUsersFromGroup($group);
+
+        $group->delete();
+    }
+
+    /**
+     * @param PandaGroup $group
+     * @param array|null $users
+     */
+    public function deleteUsersFromGroup(PandaGroup $group, array $users = null)
+    {
+        $group = $group->users();
+
+        if(isset($users) && count($users) > 0) {
+            $group = $group->whereIn('user_id', $users);
+        }
 
         $group->delete();
     }
