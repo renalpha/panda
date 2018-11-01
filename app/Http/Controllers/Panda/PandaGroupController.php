@@ -117,6 +117,29 @@ class PandaGroupController extends Controller
     }
 
     /**
+     * Group invitation.
+     *
+     * @param string $label
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function invite(string $label)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')
+                ->with('info', 'You need to be logged in.');
+        }
+
+        $group = $this->groupService->getGroupByLabel($label);
+
+        if ($group->findUserInGroup(auth()->user())) {
+            return redirect()->route('group.index')
+                ->with('info', 'You are already a member of this group.');
+        }
+
+        return view('pandaGroup.invite', ['group' => $group]);
+    }
+
+    /**
      * AJAX DataTables
      * Get users by group.
      *

@@ -8,6 +8,8 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+                    @include('layouts.partials._status_messages')
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

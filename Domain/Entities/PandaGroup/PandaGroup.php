@@ -62,4 +62,15 @@ class PandaGroup extends AggregateRoot
             $this->attributes['label'] = null;
         }
     }
+
+    /**
+     * Find user in current group.
+     *
+     * @param $user
+     * @return bool
+     */
+    public function findUserInGroup($user)
+    {
+        return in_array($user->id, array_column($this->users->toArray(), 'user_id'), true);
+    }
 }

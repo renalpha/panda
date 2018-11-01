@@ -36,8 +36,8 @@ class PandaGroupService
     {
         try {
             // Filter already existing users before adding to group.
-            collect($users)->filter(function($user) use($group){
-                if(!in_array($user['user_id'], array_column($group->users->toArray(), 'user_id'), true)) {
+            collect($users)->filter(function ($user) use ($group) {
+                if (!$group->findUserInGroup($user['user_id'])) {
                     return true;
                 }
                 return false;
@@ -94,6 +94,15 @@ class PandaGroupService
         } else {
             return $this->createGroup($params);
         }
+    }
+
+    /**
+     * @param $label
+     * @return mixed
+     */
+    public function getGroupByLabel($label)
+    {
+        return $this->groupRepository->getGroupByLabel($label)->firstOrFail();
     }
 
     /**

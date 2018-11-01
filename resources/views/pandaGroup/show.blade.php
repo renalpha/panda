@@ -31,13 +31,12 @@
                     <div class="card-header">Panda Group: {{ $group->name }}</div>
 
                     <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
+                        @include('layouts.partials._status_messages')
 
-                        <p>You are {{ auth()->user()->name }}</p>
+                        <a href="{{ route('group.invite',['label' => $group->label]) }}" class="btn btn-primary btn-sm" target="_blank">{{ route('group.invite',['label' => $group->label]) }}</a>
+
+                        <hr/>
+
                         <table class="table table-bordered" id="members-table">
                             <thead>
                             <tr>
