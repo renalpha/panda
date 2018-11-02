@@ -69,6 +69,7 @@ class PandaGroupController extends Controller
     /**
      * @param PandaGroup $pandaGroup
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(PandaGroup $pandaGroup)
     {
@@ -119,21 +120,26 @@ class PandaGroupController extends Controller
     /**
      * Group invitation.
      *
+     * @param Request $request
      * @param string $label
      * @return \Illuminate\Contracts\View\Factory|RedirectResponse|\Illuminate\View\View
      */
-    public function invite(string $label)
+    public function invite(Request $request, string $label)
     {
         if (!auth()->check()) {
-            return redirect()->route('login')
-                ->with('info', 'You need to be logged in.');
+
+            $request->session()->flash('info', 'You need to be logged in.');
+
+            return redirect()->route('login');
         }
 
         $group = $this->groupService->getGroupByLabel($label);
 
         if ($group->findUserInGroup(auth()->user())) {
-            return redirect()->route('group.index')
-                ->with('info', 'You are already a member of this group.');
+
+            $request->session()->flash('info', 'You are already a member of this group.');
+
+            return redirect()->route('group.index');
         }
 
         return view('pandaGroup.invite', ['group' => $group]);
