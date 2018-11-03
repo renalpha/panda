@@ -13,13 +13,15 @@
                         <a href="{{ route('group.new') }}" class="btn btn-primary float-right">Create Group</a>
                         <div class="clearfix"></div>
 
-                        <hr />
+                        <hr/>
                         <table class="table table-bordered" id="groups-table">
                             <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Members</th>
-                                <th>Manage</th>
+
+                                    <th>Manage</th>
+
                             </tr>
                             </thead>
                         </table>

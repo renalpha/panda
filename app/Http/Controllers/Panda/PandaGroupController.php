@@ -185,10 +185,8 @@ class PandaGroupController extends Controller
                 return $row->user->points->count();
             })
             ->addColumn('manage', function ($row) {
-                if (auth()->user()->can('manage', $row->group)) {
-                    if (auth()->user()->can('group.manage')) {
-                        return '<a href="' . route('group.remove.user', ['pandaGroup' => $row->group, 'id' => $row->user->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
-                    }
+                if (auth()->user()->can('manage', $row) && auth()->user()->can('group.manage')) {
+                    return '<a href="' . route('group.remove.user', ['pandaGroup' => $row->group, 'id' => $row->user->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
                 }
             })
             ->rawColumns(['manage'])
@@ -213,11 +211,9 @@ class PandaGroupController extends Controller
                 return $row->users->count();
             })
             ->addColumn('manage', function ($row) {
-                if (auth()->user()->can('manage', $row)) {
-                    if (auth()->user()->can('group.manage')) {
-                        return '<a href="' . route('group.edit', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-primary">Edit</a>
+                if (auth()->user()->can('manage', $row) && auth()->user()->can('group.manage')) {
+                    return '<a href="' . route('group.edit', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-primary">Edit</a>
                         <a href="' . route('group.remove', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
-                    }
                 }
             })
             ->rawColumns(['name', 'manage'])
