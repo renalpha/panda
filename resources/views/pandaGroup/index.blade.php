@@ -19,9 +19,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Members</th>
-
-                                    <th>Manage</th>
-
+                                <th>Manage</th>
                             </tr>
                             </thead>
                         </table>
