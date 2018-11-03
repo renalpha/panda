@@ -15,6 +15,7 @@ class CreatePandaGroupsTable extends Migration
     {
         Schema::create('panda_groups', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('uuid', 255);
             $table->string('name', 255);
             $table->string('label', 255);
             $table->softDeletes();

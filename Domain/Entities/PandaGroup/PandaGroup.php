@@ -5,6 +5,7 @@ namespace Domain\Entities\PandaGroup;
 use Domain\Common\AggregateRoot;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Class PandaGroup
@@ -12,14 +13,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class PandaGroup extends AggregateRoot
 {
-    use SoftDeletes;
+    use Notifiable, SoftDeletes;
 
     /**
      * Mass assign variables.
      *
      * @var array
      */
-    protected $fillable = ['name', 'label'];
+    protected $fillable = ['name', 'label', 'uuid'];
 
     /**
      * Table name.
@@ -66,11 +67,11 @@ class PandaGroup extends AggregateRoot
     /**
      * Find user in current group.
      *
-     * @param $user
+     * @param int $userId
      * @return bool
      */
-    public function findUserInGroup($user)
+    public function findUserInGroup(int $userId)
     {
-        return in_array($user->id, array_column($this->users->toArray(), 'user_id'), true);
+        return in_array($userId, array_column($this->users->toArray(), 'user_id'), true);
     }
 }

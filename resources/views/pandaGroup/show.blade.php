@@ -13,7 +13,17 @@
                     <div class="card-header">Latest Activities</div>
 
                     <div class="card-body">
-                        No activity
+                        <ul class="list-group" id="activites">
+                            @foreach($group->notifications()->take(10)->get() as $notification)
+                                <li>
+                                    <div href="#" class="list-group-item">
+                                        <span class="name" style="min-width: 120px; display: inline-block;">{{ $notification->data['name'] }}</span>
+                                        <span class="text-muted" style="font-size: 11px;">{{ $notification->data['message'] }}</span>
+                                        <span class="float-right"><span class="badge">{{ $notification->created_at->format('d F Y') }}</span>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -33,8 +43,9 @@
                     <div class="card-body">
                         @include('layouts.partials._status_messages')
 
-                        <a href="{{ route('group.invite',['label' => $group->label]) }}" class="btn btn-primary btn-sm" target="_blank">{{ route('group.invite',['label' => $group->label]) }}</a>
-
+                        <p><strong>Invitation code:</strong>
+                            <Code class=" language-php">{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]) }}</Code>
+                        </p>
                         <hr/>
 
                         <table class="table table-bordered" id="members-table">

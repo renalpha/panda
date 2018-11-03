@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'HomeController@index');
-Route::get('/invite/group/{label}', 'Panda\PandaGroupController@invite')->name('group.invite');
+Route::get('/invite/group/{label}/code/{code}', 'Panda\PandaGroupController@invite')->name('group.invite');
 Auth::routes(['verify' => true]);
 
 /**

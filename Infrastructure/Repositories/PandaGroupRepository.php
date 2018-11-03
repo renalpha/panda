@@ -42,4 +42,14 @@ class PandaGroupRepository extends AbstractRepository
             ->groupBy('panda_groups.id');
         return $this;
     }
+
+    /**
+     * @param string $uuid
+     * @return PandaGroupRepository
+     */
+    public function findByUuid(string $uuid): self
+    {
+        $this->model = $this->model->where('uuid', $uuid);
+        return $this;
+    }
 }

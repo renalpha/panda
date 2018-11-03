@@ -102,6 +102,42 @@ class PandaGroupController extends Controller
     }
 
     /**
+     * Group invitation.
+     *
+     * @param Request $request
+     * @param string $label
+     * @param string $code
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    public function invite(Request $request, string $label, string $code)
+    {
+        if (!auth()->check()) {
+
+            $request->session()->flash('info', 'You need to be logged in.');
+
+            return redirect()->route('login');
+        }
+
+        $group = $this->groupService->getGroupByLabelAndUuid($label, $code);
+
+        if ($group->findUserInGroup(auth()->user()->id)) {
+
+            $request->session()->flash('info', 'You are already a member of this group.');
+
+            return redirect()->route('group.index');
+        }
+
+        // Add user as member.
+        $this->groupService->addUsersToGroup([['user_id' => auth()->user()->id, 'role_id' => PandaGroupRole::where('label', 'member')->first()->id]], $group);
+
+        $request->session()->flash('info', 'You have successfully joined group: ' . $group->name);
+
+        return redirect()
+            ->route('group.show', ['label' => $group->label]);
+    }
+
+    /**
      * @param Request $request
      * @param PandaGroup $pandaGroup
      * @return RedirectResponse
@@ -115,34 +151,6 @@ class PandaGroupController extends Controller
 
         return redirect()
             ->back();
-    }
-
-    /**
-     * Group invitation.
-     *
-     * @param Request $request
-     * @param string $label
-     * @return \Illuminate\Contracts\View\Factory|RedirectResponse|\Illuminate\View\View
-     */
-    public function invite(Request $request, string $label)
-    {
-        if (!auth()->check()) {
-
-            $request->session()->flash('info', 'You need to be logged in.');
-
-            return redirect()->route('login');
-        }
-
-        $group = $this->groupService->getGroupByLabel($label);
-
-        if ($group->findUserInGroup(auth()->user())) {
-
-            $request->session()->flash('info', 'You are already a member of this group.');
-
-            return redirect()->route('group.index');
-        }
-
-        return view('pandaGroup.invite', ['group' => $group]);
     }
 
     public function removeUserFromGroup(Request $request, PandaGroup $pandaGroup, int $userId)
@@ -177,7 +185,11 @@ class PandaGroupController extends Controller
                 return $row->user->points->count();
             })
             ->addColumn('manage', function ($row) {
-                return '<a href="' . route('group.remove.user', ['pandaGroup' => $row->group, 'id' => $row->user->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
+                if (auth()->user()->can('manage', $row->group)) {
+                    if (auth()->user()->can('group.manage')) {
+                        return '<a href="' . route('group.remove.user', ['pandaGroup' => $row->group, 'id' => $row->user->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
+                    }
+                }
             })
             ->rawColumns(['manage'])
             ->make(true);
@@ -201,12 +213,12 @@ class PandaGroupController extends Controller
                 return $row->users->count();
             })
             ->addColumn('manage', function ($row) {
-//                if (auth()->user()->can('manage', $row)) {
-//                    if (auth()->user()->can('group.manage')) {
-                return '<a href="' . route('group.edit', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-primary">Edit</a>
+                if (auth()->user()->can('manage', $row)) {
+                    if (auth()->user()->can('group.manage')) {
+                        return '<a href="' . route('group.edit', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-primary">Edit</a>
                         <a href="' . route('group.remove', ['id' => $row->panda_group_id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
-//                    }
-//                }
+                    }
+                }
             })
             ->rawColumns(['name', 'manage'])
             ->make(true);

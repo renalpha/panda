@@ -2,8 +2,11 @@
 
 namespace Domain\Services;
 
+use App\Notifications\PandaGroupUserJoined;
 use Domain\Entities\PandaGroup\PandaGroup;
 use Domain\Entities\PandaGroup\PandaGroupUser;
+use Illuminate\Notifications\DatabaseNotificationCollection;
+use Illuminate\Support\Str;
 use Infrastructure\Repositories\PandaGroupRepository;
 
 /**
@@ -47,10 +50,13 @@ class PandaGroupService
                     'panda_group_id' => $group->id,
                     'panda_group_role_id' => $user['role_id'],
                 ]);
+
+                $group->notify(new PandaGroupUserJoined($user['user_id'], $group->id));
             });
 
             return true;
         } catch (\Exception $e) {
+            dd($e->getTraceAsString());
             throw new \Exception('Could not add user to Panda group');
         }
     }
@@ -61,6 +67,8 @@ class PandaGroupService
      */
     public function createGroup(array $params): PandaGroup
     {
+        $params['uuid'] = Str::uuid();
+
         $group = $this->groupRepository->create($params);
 
         $group->save();
@@ -107,6 +115,16 @@ class PandaGroupService
 
     /**
      * @param $label
+     * @param $uuid
+     * @return mixed
+     */
+    public function getGroupByLabelAndUuid($label, $uuid)
+    {
+        return $this->groupRepository->findByUuid($uuid)->getGroupByLabel($label)->firstOrFail();
+    }
+
+    /**
+     * @param $label
      * @return mixed|void
      */
     public function getGroupByLabelAndAuthenticatedUser($label)
@@ -147,7 +165,7 @@ class PandaGroupService
     {
         $group = $group->users();
 
-        if(isset($users) && count($users) > 0) {
+        if (isset($users) && count($users) > 0) {
             $group = $group->whereIn('user_id', $users);
         }
 
