@@ -17,6 +17,7 @@
                             @foreach($group->notifications()->take(10)->get() as $notification)
                                 <li>
                                     <div href="#" class="list-group-item">
+                                        <a href="#" class="btn btn-default"><i class="fa fa-heart-o"></i></a>
                                         <span class="name" style="min-width: 120px; display: inline-block;">{{ $notification->data['name'] }}</span>
                                         <span class="text-muted" style="font-size: 11px;">{{ $notification->data['message'] }}</span>
                                         <span class="float-right"><span class="badge">{{ $notification->created_at->format('d F Y') }}</span>

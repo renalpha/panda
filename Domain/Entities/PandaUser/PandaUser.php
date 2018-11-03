@@ -2,15 +2,18 @@
 
 namespace Domain\Entities\PandaUser;
 
+use Cog\Contracts\Love\Liker\Models\Liker as LikerContract;
+use Cog\Laravel\Love\Liker\Models\Traits\Liker;
 use Domain\Common\AggregateRoot;
-use Domain\Entities\PandaGroup\PandaGroup;
+
 
 /**
  * Class PandaUser
  * @package Domain\Entities\PandaUser
  */
-class PandaUser extends AggregateRoot
+class PandaUser extends AggregateRoot implements LikerContract
 {
+    use Liker;
     /**
      * Database table.
      *
