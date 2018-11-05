@@ -2,7 +2,9 @@
 
 namespace Domain\Entities\PandaGroup;
 
+use App\Models\Notification;
 use Domain\Common\AggregateRoot;
+use Domain\Entities\PandaComment\PandaCommentTrait;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class PandaGroup extends AggregateRoot
 {
-    use Notifiable, SoftDeletes;
+    use Notifiable, PandaCommentTrait, SoftDeletes;
 
     /**
      * Mass assign variables.
@@ -73,5 +75,16 @@ class PandaGroup extends AggregateRoot
     public function findUserInGroup(int $userId)
     {
         return in_array($userId, array_column($this->users->toArray(), 'user_id'), true);
+    }
+
+    /**
+     * Notifications.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable')
+            ->orderBy('created_at', 'desc');
     }
 }

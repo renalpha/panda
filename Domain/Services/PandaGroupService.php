@@ -3,9 +3,11 @@
 namespace Domain\Services;
 
 use App\Notifications\PandaGroupUserJoined;
+use App\Notifications\PandaPointReset;
 use Domain\Entities\PandaGroup\PandaGroup;
 use Domain\Entities\PandaGroup\PandaGroupUser;
-use Illuminate\Notifications\DatabaseNotificationCollection;
+use Domain\Entities\PandaUser\PandaUserPoint;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Infrastructure\Repositories\PandaGroupRepository;
 
@@ -170,5 +172,25 @@ class PandaGroupService
         }
 
         $group->delete();
+    }
+
+    /**
+     * @param int $userId
+     * @param Collection $groups
+     */
+    public function clearPointsByUser(int $userId, Collection $groups): void
+    {
+        foreach ($groups as $groupUser) {
+            $group = $this->groupRepository->find($groupUser->panda_group_id);
+            if (isset($group)) {
+                $group->notify(new PandaPointReset($userId, $groupUser->group->id));
+            }
+        }
+
+        $points = PandaUserPoint::where('user_id', $userId)->get();
+
+        foreach ($points as $point) {
+            $point->delete();
+        }
     }
 }

@@ -5,7 +5,8 @@ namespace Domain\Entities\PandaUser;
 use Cog\Contracts\Love\Liker\Models\Liker as LikerContract;
 use Cog\Laravel\Love\Liker\Models\Traits\Liker;
 use Domain\Common\AggregateRoot;
-
+use Domain\Entities\PandaGroup\PandaGroup;
+use Domain\Entities\PandaGroup\PandaGroupUser;
 
 /**
  * Class PandaUser
@@ -13,7 +14,8 @@ use Domain\Common\AggregateRoot;
  */
 class PandaUser extends AggregateRoot implements LikerContract
 {
-    use Liker;
+    use PandaUserTrait, Liker;
+
     /**
      * Database table.
      *
@@ -22,10 +24,10 @@ class PandaUser extends AggregateRoot implements LikerContract
     protected $table = 'users';
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function points()
+    public function groups()
     {
-        return $this->hasMany(new PandaUserPoint(), 'user_id');
+        return $this->hasMany(new PandaGroupUser(), 'user_id', 'id');
     }
 }

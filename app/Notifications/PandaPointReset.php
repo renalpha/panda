@@ -2,10 +2,10 @@
 
 namespace App\Notifications;
 
+use Domain\Entities\PandaUser\PandaUser;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class PandaPointReset extends Notification
 {
@@ -14,34 +14,28 @@ class PandaPointReset extends Notification
     /**
      * @var int
      */
-    private $groupId;
+    protected $userId;
 
     /**
      * @var int
      */
-    private $userId;
+    protected $groupId;
 
     /**
-     * @var string
+     * PandaGroupUserJoined constructor.
+     * @param int $userId
+     * @param int $groupId
      */
-    private $type;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @param array $params
-     */
-    public function __construct(array $params)
+    public function __construct(int $userId, int $groupId)
     {
-        $this->groupId = $params['group_id'];
-        $this->userId = $params['user_id'];
-        $this->type = $params['type'];
+        $this->userId = $userId;
+        $this->groupId = $groupId;
     }
 
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -52,7 +46,7 @@ class PandaPointReset extends Notification
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable): MailMessage
@@ -66,15 +60,18 @@ class PandaPointReset extends Notification
     /**
      * Get the array representation of the notification.
      *
-     * @param  mixed  $notifiable
+     * @param  mixed $notifiable
      * @return array
      */
     public function toArray($notifiable): array
     {
+        $name = PandaUser::find($this->userId)->name;
+
         return [
-            'panda_group_id' => $this->groupId,
             'user_id' => $this->userId,
-            'type' => $this->type,
+            'group_id' => $this->groupId,
+            'name' => $name,
+            'message' => $name . ' has resetted it\'s points. WOW!',
         ];
     }
 }

@@ -10,6 +10,8 @@ use Domain\Entities\PandaGroup\PandaGroupRole;
 use Domain\Services\PandaGroupService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Vinkla\Hashids\Facades\Hashids;
 
 /**
  * Class PandaGroupController
@@ -107,11 +109,20 @@ class PandaGroupController extends Controller
      * @param Request $request
      * @param string $label
      * @param string $code
-     * @return RedirectResponse
+     * @return RedirectResponse|Response
      * @throws \Exception
      */
     public function invite(Request $request, string $label, string $code)
     {
+        try {
+            $group = $this->groupService->getGroupByLabelAndUuid($label, $code);
+            if (empty($request->referral_user_id) && $group->findUserInGroup((int)Hashids::decode($request->referral_user_id)) === false) {
+                return abort('404');
+            }
+        } catch (\Exception $e) {
+            return abort('404');
+        }
+
         if (!auth()->check()) {
 
             $request->session()->flash('info', 'You need to be logged in.');
@@ -119,7 +130,6 @@ class PandaGroupController extends Controller
             return redirect()->route('login');
         }
 
-        $group = $this->groupService->getGroupByLabelAndUuid($label, $code);
 
         if ($group->findUserInGroup(auth()->user()->id)) {
 
@@ -153,6 +163,12 @@ class PandaGroupController extends Controller
             ->back();
     }
 
+    /**
+     * @param Request $request
+     * @param PandaGroup $pandaGroup
+     * @param int $userId
+     * @return RedirectResponse
+     */
     public function removeUserFromGroup(Request $request, PandaGroup $pandaGroup, int $userId)
     {
         $this->groupService->deleteUsersFromGroup($pandaGroup, [$userId]);
@@ -185,7 +201,7 @@ class PandaGroupController extends Controller
                 return $row->user->points->count();
             })
             ->addColumn('manage', function ($row) {
-                if (auth()->user()->can('manage', $row) && auth()->user()->can('group.manage')) {
+                if (auth()->user()->can('manage', $row->group) && auth()->user()->can('group.manage')) {
                     return '<a href="' . route('group.remove.user', ['pandaGroup' => $row->group, 'id' => $row->user->id]) . '" class="btn btn-sm btn-danger" onclick="return confirm(\'Are you sure?\')">Remove</a>';
                 }
             })

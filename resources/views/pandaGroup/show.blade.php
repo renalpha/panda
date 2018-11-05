@@ -7,6 +7,31 @@
 
 @section('content')
     <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        @include('layouts.partials._status_messages')
+
+                        <span class="float-left"><strong>Invitation code:</strong>
+                            <Code class=" language-php"> <a href="#" class="copy-link"
+                                                            data-link="{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}">{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}</a></Code>
+                            <input type="hidden" class="copy-link-value"
+                                   value="{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}"/>
+                        </span>
+                        <a href="/ajax/reset/points" class="btn btn-success float-right" onclick="return confirm('Are you sure?')">
+                            Reset
+                        </a>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p></p>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -16,11 +41,17 @@
                         <ul class="list-group" id="activites">
                             @foreach($group->notifications()->take(10)->get() as $notification)
                                 <li>
-                                    <div href="#" class="list-group-item">
-                                        <a href="#" class="btn btn-default"><i class="fa fa-heart-o"></i></a>
+                                    <div class="list-group-item">
+                                        @include('pandaLike.like', [
+                                        'likeObject' => $notification,
+                                        'likeId' => $notification->id,
+                                        'likeType' => 'groupNotification'
+                                        ])
                                         <span class="name" style="min-width: 120px; display: inline-block;">{{ $notification->data['name'] }}</span>
                                         <span class="text-muted" style="font-size: 11px;">{{ $notification->data['message'] }}</span>
-                                        <span class="float-right"><span class="badge">{{ $notification->created_at->format('d F Y') }}</span>
+                                        <span class="float-right"><span class="badge">{{ $notification->created_at->format('d F Y') }}</span></span>
+                                        <hr/>
+                                        @include('pandaComments.comments', ['commentsObject' => $notification])
                                     </div>
                                 </li>
                             @endforeach
@@ -42,13 +73,6 @@
                     <div class="card-header">Panda Group: {{ $group->name }}</div>
 
                     <div class="card-body">
-                        @include('layouts.partials._status_messages')
-
-                        <p><strong>Invitation code:</strong>
-                            <Code class=" language-php">{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]) }}</Code>
-                        </p>
-                        <hr/>
-
                         <table class="table table-bordered" id="members-table">
                             <thead>
                             <tr>

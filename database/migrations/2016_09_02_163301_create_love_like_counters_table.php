@@ -43,6 +43,10 @@ class CreateLoveLikeCountersTable extends Migration
                 'type_id',
             ], 'like_counter_unique');
         });
+
+        Schema::table('love_like_counters', function (Blueprint $table) {
+            $table->string('likeable_id')->change();
+        });
     }
 
     /**

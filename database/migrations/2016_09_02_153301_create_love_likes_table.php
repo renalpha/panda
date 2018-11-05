@@ -45,6 +45,10 @@ class CreateLoveLikesTable extends Migration
 
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        Schema::table('love_likes', function (Blueprint $table) {
+            $table->string('likeable_id')->change();
+        });
     }
 
     /**

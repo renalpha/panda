@@ -4,13 +4,18 @@ namespace App\Models;
 
 use Cog\Contracts\Love\Liker\Models\Liker as LikerContract;
 use Cog\Laravel\Love\Liker\Models\Traits\Liker;
+use Domain\Entities\PandaUser\PandaUserTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class User
+ * @package App\Models
+ */
 class User extends Authenticatable implements MustVerifyEmail, LikerContract
 {
-    use Notifiable, HasRolesTrait, Liker;
+    use Notifiable, HasRolesTrait, PandaUserTrait, Liker;
 
     /**
      * The attributes that are mass assignable.
