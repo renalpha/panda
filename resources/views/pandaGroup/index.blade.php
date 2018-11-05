@@ -14,7 +14,7 @@
                         <div class="clearfix"></div>
 
                         <hr/>
-                        <table class="table table-bordered" id="groups-table">
+                        <table class="table table-bordered display nowrap" id="groups-table" style="width:100%">
                             <thead>
                             <tr>
                                 <th>Name</th>
@@ -36,6 +36,7 @@
             $('#groups-table').DataTable({
                 processing: true,
                 serverSide: true,
+                scrollX: true,
                 ajax: '{!! route('ajax.group.index') !!}',
                 columns: [
                     {data: 'name', name: 'name'},

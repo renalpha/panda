@@ -11,18 +11,24 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-body">
-                        @include('layouts.partials._status_messages')
-
-                        <span class="float-left"><strong>Invitation code:</strong>
-                            <Code class=" language-php"> <a href="#" class="copy-link"
-                                                            data-link="{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}">{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}</a></Code>
-                            <input type="hidden" class="copy-link-value"
-                                   value="{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}"/>
-                        </span>
-                        <a href="/ajax/reset/points" class="btn btn-success float-right" onclick="return confirm('Are you sure?')">
-                            Reset
-                        </a>
-                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @include('layouts.partials._status_messages')
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9"><strong>Invitation code:</strong><br/>
+                                <Code class=" language-php"> <a href="#" class="copy-link"
+                                                                data-link="{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}">{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}</a></Code>
+                                <input type="hidden" class="copy-link-value"
+                                       value="{{ route('group.invite',['label' => $group->label, 'code' => $group->uuid]).'?referral_user_id='.auth()->user()->encrypted_user_id }}"/>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="/ajax/reset/points" class="btn btn-success float-right" onclick="return confirm('Are you sure?')">
+                                    Reset
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,9 +53,9 @@
                                         'likeId' => $notification->id,
                                         'likeType' => 'groupNotification'
                                         ])
-                                        <span class="name" style="min-width: 120px; display: inline-block;">{{ $notification->data['name'] }}</span>
-                                        <span class="text-muted" style="font-size: 11px;">{{ $notification->data['message'] }}</span>
-                                        <span class="float-right"><span class="badge">{{ $notification->created_at->format('d F Y') }}</span></span>
+                                        <span class="name" style="min-width: 120px; display: inline-block;">{{ $notification->data['message'] }}</span>
+
+                                        <span class="float-right"><span class="badge">{{ $notification->created_at->diffForHumans() }}</span></span>
                                         <hr/>
                                         @include('pandaComments.comments', ['commentsObject' => $notification])
                                     </div>
@@ -73,7 +79,7 @@
                     <div class="card-header">Panda Group: {{ $group->name }}</div>
 
                     <div class="card-body">
-                        <table class="table table-bordered" id="members-table">
+                        <table class="table table-bordered display nowrap" id="members-table" style="width:100%">
                             <thead>
                             <tr>
                                 <th>Name</th>
@@ -96,6 +102,7 @@
             $('#members-table').DataTable({
                 processing: true,
                 serverSide: true,
+                scrollX: true,
                 ajax: '{!! route('ajax.group.members', [$group->label]) !!}',
                 columns: [
                     {data: 'name', name: 'name'},
