@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     /**
+     * @var array
+     */
+    protected $fillable = ['name', 'label'];
+
+    /**
      * A role may be given various permissions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
