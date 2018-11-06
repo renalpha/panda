@@ -40,6 +40,7 @@ class PandaGroupRepository extends AbstractRepository
                 $join->on('panda_groups_users.panda_group_id', '=', 'panda_groups.id');
             })->where('panda_groups_users.user_id', '=', auth()->user()->id)
             ->groupBy('panda_groups.id');
+
         return $this;
     }
 

@@ -39,7 +39,7 @@ class PandaGroupController extends Controller
     public function index()
     {
         $groups = $this->groupService->groupsByAuthenticatedUser()->get();
-
+dd($groups);
         return view('pandaGroup.index', [
             'groups' => $groups,
         ]);
