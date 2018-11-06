@@ -20,11 +20,17 @@ class PandaComment extends AggregateRoot implements LikeableContract
     protected $table = 'comments';
 
     /**
+     * @var array
+     */
+    protected $appends = ['created_at_humans'];
+
+    /**
      * Mass assign vars.
      *
      * @var array
      */
     protected $fillable = ['commentable_id', 'commentable_type', 'user_id', 'data'];
+
 
     /**
      * Get all of the owning commentable models.

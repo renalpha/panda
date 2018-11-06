@@ -1,6 +1,6 @@
 <div class="detailBox">
     <div class="actionBox">
-        <ul class="commentList">
+        <ul class="commentList" data-comment="{{ $commentsObject->id }}">
             @if(isset($commentsObject->comments))
                 @foreach($commentsObject->comments()->limit(30)->get() as $comment)
                     <li>
@@ -10,13 +10,14 @@
                         <div class="commentText">
                             <p><strong>{{ $comment->name }}</strong></p>
                             <p>{{ $comment->comment }}</p>
-                            <span class="date sub-text">on {{ $comment->created_at->diffForHumans() }} |
-                                @include('pandaLike.like', [
-                                'likeObject' => $comment,
-                                'likeId' => $comment->id,
-                                'likeType' => 'pandaComment'
-                                ])
-                            </span>
+                            <span class="date sub-text">on {{ $comment->created_at->diffForHumans() }}
+                             {{--| --}}
+                                {{--@include('pandaLike.like', [--}}
+                                {{--'likeObject' => $comment,--}}
+                                {{--'likeId' => $comment->id,--}}
+                                {{--'likeType' => 'pandaComment'--}}
+                                {{--])--}}
+                            {{--</span>--}}
                         </div>
                     </li>
                 @endforeach

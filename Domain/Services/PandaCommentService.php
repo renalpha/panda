@@ -2,6 +2,7 @@
 
 namespace Domain\Services;
 
+use App\Events\PandaGroupCommentNotificationCreated;
 use Infrastructure\Repositories\PandaCommentRepository;
 
 /**
@@ -37,5 +38,7 @@ class PandaCommentService
             'user_id' => auth()->user()->id,
             'data' => json_encode($data),
         ]);
+
+        event(new PandaGroupCommentNotificationCreated($comment));
     }
 }

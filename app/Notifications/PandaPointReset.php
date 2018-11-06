@@ -65,13 +65,14 @@ class PandaPointReset extends Notification
      */
     public function toArray($notifiable): array
     {
-        $name = PandaUser::find($this->userId)->name;
+        $user = PandaUser::find($this->userId);
 
         return [
             'user_id' => $this->userId,
             'group_id' => $this->groupId,
-            'name' => $name,
-            'message' => $name . ' has resetted it\'s points. WOW!',
+            'name' => $user->name,
+            'profile_picture' => $user->profile_picture,
+            'message' => $user->name . ' has resetted it\'s points. WOW!',
         ];
     }
 }

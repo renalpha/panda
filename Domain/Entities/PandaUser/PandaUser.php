@@ -7,6 +7,7 @@ use Cog\Laravel\Love\Liker\Models\Traits\Liker;
 use Domain\Common\AggregateRoot;
 use Domain\Entities\PandaGroup\PandaGroup;
 use Domain\Entities\PandaGroup\PandaGroupUser;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Class PandaUser
@@ -14,7 +15,7 @@ use Domain\Entities\PandaGroup\PandaGroupUser;
  */
 class PandaUser extends AggregateRoot implements LikerContract
 {
-    use PandaUserTrait, Liker;
+    use PandaUserTrait, Liker, Notifiable;
 
     /**
      * Database table.

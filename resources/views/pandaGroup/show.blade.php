@@ -114,3 +114,11 @@
         });
     </script>
 @endpush
+
+@push('headerScripts')
+    @if(!auth()->guest())
+        <script>
+            window.Laravel.groupId = <?php echo $group->id; ?>;
+        </script>
+    @endif
+@endpush

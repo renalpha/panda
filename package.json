@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "datatables.net-bs4": "^1.10.19",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "laravel-echo": "^1.4.1",
+    "pusher-js": "^4.3.1"
   }
 }

@@ -63,6 +63,14 @@ abstract class Entity extends Model
     }
 
     /**
+     * @return mixed
+     */
+    public function getCreatedAtHumansAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
+    /**
      * Generates an unique iterated name.
      *
      * @param $column

@@ -31,8 +31,23 @@ trait PandaUserTrait
         return $this->hasMany(new PandaUserPoint(), 'user_id');
     }
 
+    /**
+     * Get profile picture.
+     *
+     * @return string
+     */
     public function getProfilePictureAttribute()
     {
         return 'placeholder_profile.png';
+    }
+
+    /**
+     * The channels the user receives notification broadcasts on.
+     *
+     * @return string
+     */
+    public function receivesBroadcastNotificationsOn(): string
+    {
+        return 'users.' . $this->id;
     }
 }
