@@ -12,7 +12,8 @@
         "laravel/tinker": "^1.0",
         "pusher/pusher-php-server": "~3.0",
         "vinkla/hashids": "^5.1",
-        "yajra/laravel-datatables-oracle": "~8.0"
+        "yajra/laravel-datatables-oracle": "~8.0",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.4",
