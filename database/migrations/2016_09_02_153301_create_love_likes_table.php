@@ -31,10 +31,7 @@ class CreateLoveLikesTable extends Migration
             $table->increments('id');
             $table->morphs('likeable');
             $table->integer('user_id')->unsigned()->index();
-            $table->enum('type_id', [
-                'LIKE',
-                'DISLIKE',
-            ])->default('LIKE');
+            $table->string('type_id')->default('LIKE');
             $table->timestamps();
 
             $table->unique([

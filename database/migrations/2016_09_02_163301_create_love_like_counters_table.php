@@ -30,10 +30,7 @@ class CreateLoveLikeCountersTable extends Migration
         Schema::create('love_like_counters', function (Blueprint $table) {
             $table->increments('id');
             $table->morphs('likeable');
-            $table->enum('type_id', [
-                'LIKE',
-                'DISLIKE',
-            ])->default('LIKE');
+            $table->string('type_id')->default('LIKE');
             $table->integer('count')->unsigned()->default(0);
             $table->timestamps();
 
