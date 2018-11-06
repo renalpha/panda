@@ -15,4 +15,9 @@ class PandaGroupRole extends Entity
      * @var array
      */
     protected $fillable = ['name', 'label'];
+
+    /**
+     * @var bool
+     */
+    public $timestamps = false;
 }
