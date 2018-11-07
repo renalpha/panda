@@ -87,4 +87,12 @@ class PandaGroup extends AggregateRoot
         return $this->morphMany(Notification::class, 'notifiable')
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * @return int
+     */
+    public function getWeeksCountPointsAttribute(): int
+    {
+        return 4;
+    }
 }

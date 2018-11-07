@@ -192,5 +192,11 @@ class PandaGroupService
         foreach ($points as $point) {
             $point->delete();
         }
+
+        // Create a 0 point to keep track of last time you did something.
+        PandaUserPoint::create([
+            'user_id' => $userId,
+            'amount' => 0,
+        ]);
     }
 }

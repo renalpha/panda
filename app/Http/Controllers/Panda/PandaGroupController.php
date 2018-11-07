@@ -198,7 +198,7 @@ class PandaGroupController extends Controller
                 return $row->user->email;
             })
             ->addColumn('points', function ($row) {
-                return $row->user->points->count();
+                return $row->user->points()->sum('amount');
             })
             ->addColumn('manage', function ($row) {
                 if (auth()->user()->can('manage', $row->group) && auth()->user()->can('group.manage')) {

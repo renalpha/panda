@@ -28,10 +28,15 @@ class PandaUserService
     /**
      * @param int $userId
      * @return mixed
+     * @throws \Exception
      */
     public function findGroupsByUserId(int $userId)
     {
-        $user = $this->userRepository->where('id', '=', $userId)->firstOrFail();
-        return $user->groups;
+        try {
+            $user = $this->userRepository->where('id', '=', $userId)->first();
+            return $user->groups ?? null;
+        } catch (\Exception $e) {
+            throw new \Exception('Could not find user by id: ' . $userId);
+        }
     }
 }
