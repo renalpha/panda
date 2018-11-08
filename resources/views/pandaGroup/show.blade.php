@@ -44,6 +44,13 @@
                     <div class="card-header">Latest Activities</div>
 
                     <div class="card-body">
+
+                        <div class="hover-update text-center" id="notificationUpdate" style="display: none;">
+                            <p>
+                                <a href="{{ url()->full() }}" class="btn btn-danger btn-sm">New activity <i class="fa fa-refresh"></i></a>
+                            </p>
+                        </div>
+
                         <ul class="list-group" id="activites">
                             @foreach($group->notifications()->take(10)->get() as $notification)
                                 <li>

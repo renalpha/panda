@@ -2,6 +2,7 @@
 
 namespace Domain\Services;
 
+use App\Events\PandaNewActivityCreated;
 use App\Notifications\PandaGroupUserJoined;
 use App\Notifications\PandaPointReset;
 use Domain\Entities\PandaGroup\PandaGroup;
@@ -54,6 +55,8 @@ class PandaGroupService
                 ]);
 
                 $group->notify(new PandaGroupUserJoined($user['user_id'], $group->id));
+
+                event(new PandaNewActivityCreated($group));
             });
 
             return true;

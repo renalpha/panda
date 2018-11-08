@@ -63,7 +63,7 @@ class PandaGroupCommentNotificationCreated implements ShouldBroadcast
     {
         return [
             'comment' => $this->comment->toArray(),
-            'nortification' => $this->notification->toArray(),
+            'notification' => $this->notification->toArray(),
         ];
     }
 

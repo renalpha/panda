@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\PandaNewActivityCreated;
 use App\Notifications\PandaPointAcquired;
 use Carbon\Carbon;
 use Domain\Entities\PandaUser\PandaUser;
@@ -9,6 +10,10 @@ use Domain\Entities\PandaUser\PandaUserPoint;
 use Domain\Services\PandaUserService;
 use Illuminate\Console\Command;
 
+/**
+ * Class CheckPoints
+ * @package App\Console\Commands
+ */
 class CheckPoints extends Command
 {
     /**
@@ -71,23 +76,26 @@ class CheckPoints extends Command
                 $weeksPassed = $userLastPoint->diffInWeeks(Carbon::now());
 
                 if (isset($groups)) {
-                    $groups->each(function ($group) use ($user, $weeksPassed) {
 
+                    $shouldAddPoints = false;
+                    foreach ($groups as $group) {
                         if (isset($group->group) && $weeksPassed >= $group->group->weeks_count_points) {
-                            PandaUserPoint::create([
-                                'user_id' => $user->id,
-                                'amount' => 1,
-                            ]);
-
+                            $shouldAddPoints = true;
                             $group->group->notify(new PandaPointAcquired($user->id, $group->panda_group_id));
+                            event(new PandaNewActivityCreated($group->group));
                         }
-                    });
+                    }
+
+                    if ($shouldAddPoints === true) {
+                        PandaUserPoint::create([
+                            'user_id' => $user->id,
+                            'amount' => 1,
+                        ]);
+                    }
                 }
             });
         } catch (\Exception $e) {
             dd($e->getTraceAsString());
         }
-
-
     }
 }

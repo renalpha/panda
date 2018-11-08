@@ -4,6 +4,10 @@ window.jQuery(document).ready(function () {
         Echo.private('users.group.notification.' + Laravel.groupId)
             .listen('PandaGroupCommentNotificationCreated', (data) => {
                 window.jQuery('*[data-comment="' + data.comment.commentable_id + '"]').prepend(commentToAppend(data))
+            })
+            .listen('PandaNewActivityCreated', (data) => {
+                console.log('pand activity');
+                window.jQuery('#notificationUpdate').fadeIn();
             });
     }
 
