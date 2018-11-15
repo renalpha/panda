@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostAdminPhotoRequest extends FormRequest
+class PostPhotoUploadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +23,8 @@ class PostAdminPhotoRequest extends FormRequest
      */
     public function rules()
     {
-        $rules['file'] = 'image|max:10240';
-
-        return $rules;
+        return [
+            'image|max:10240',
+        ];
     }
 }

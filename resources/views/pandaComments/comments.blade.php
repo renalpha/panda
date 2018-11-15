@@ -10,20 +10,19 @@
                         <div class="commentText">
                             <p><strong>{{ $comment->name }}</strong></p>
                             <p>{{ $comment->comment }}</p>
-                            <span class="date sub-text">on {{ $comment->created_at->diffForHumans() }}
+                            <span class="date sub-text">on {{ $comment->created_at->diffForHumans() }}</span>
                              {{--| --}}
                                 {{--@include('pandaLike.like', [--}}
                                 {{--'likeObject' => $comment,--}}
                                 {{--'likeId' => $comment->id,--}}
                                 {{--'likeType' => 'pandaComment'--}}
                                 {{--])--}}
-                            {{--</span>--}}
                         </div>
                     </li>
                 @endforeach
             @endif
         </ul>
-        <form class="form-inline replyForm" role="form" method="post" action="{{ route('comment.store', ['type' => 'groupNotification', 'id' => $commentsObject->id]) }}">
+        <form class="form-inline replyForm" role="form" method="post" action="{{ route('comment.store', ['type' => 'groupNotification', 'id' => $commentsObject->id]) }}" autocomplete="off">
             @csrf
             <div class="form-group">
                 <input class="form-control" type="text" placeholder="Your comments" name="comment" />

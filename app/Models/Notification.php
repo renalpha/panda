@@ -13,7 +13,7 @@ use Illuminate\Notifications\DatabaseNotification;
  */
 class Notification extends DatabaseNotification implements LikeableContract
 {
-    use Likeable;
+    use Likeable, LikesUsersTrait;
 
     /**
      * @return mixed

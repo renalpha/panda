@@ -13,7 +13,7 @@ code {
  * Basic button style
  */
 .btn-like {
-    box-shadow: 1px 1px 0 rgba(255,255,255,0.5) inset;
+    box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5) inset;
     border-radius: 3px;
     border: 1px solid;
     display: inline-block;
@@ -24,14 +24,21 @@ code {
 
     font-size: 12px;
     text-decoration: none;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
+
 /*
  * Counter button style
  */
-.btn-counter { margin-right: 39px; }
+.btn-counter {
+    margin-right: 39px;
+}
+
 .btn-counter:after,
-.btn-counter:hover:after { text-shadow: none; }
+.btn-counter:hover:after {
+    text-shadow: none;
+}
+
 .btn-counter:after {
     border-radius: 3px;
     border: 1px solid #d3d3d3;
@@ -45,6 +52,7 @@ code {
     position: absolute;
     top: -1px;
 }
+
 .btn-counter:before {
     transform: rotate(45deg);
     filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865476, M12=-0.7071067811865475, M21=0.7071067811865475, M22=0.7071067811865476, sizingMethod='auto expand');
@@ -62,6 +70,7 @@ code {
     z-index: 1;
     zoom: 1;
 }
+
 /*
  * Custom styles
  */
@@ -70,89 +79,105 @@ code {
     border-color: #bbb;
     color: #666;
 }
+
 .btn-like:hover,
 .btn-like.active {
     text-shadow: 0 1px 0 #b12f27;
     background-color: #f64136;
     border-color: #b12f27;
 }
-.btn-like:active { box-shadow: 0 0 5px 3px rgba(0,0,0,0.2) inset; }
-.btn-like span { color: #f64136; }
+
+.btn-like:active {
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.2) inset;
+}
+
+.btn-like span {
+    color: #f64136;
+}
+
 .btn-like:hover, .btn:hover span,
-.btn-like.active, .btn.active span { color: #eeeeee; }
+.btn-like.active, .btn.active span {
+    color: #eeeeee;
+}
+
 .btn-like:active span {
     color: #b12f27;
-    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
 }
-
 
 .detailBox {
-    border:1px solid #bbb;
+    border: 1px solid #bbb;
 }
+
 .titleBox {
-    background-color:#fdfdfd;
-    padding:10px;
+    background-color: #fdfdfd;
+    padding: 10px;
 }
-.titleBox label{
-    color:#444;
-    margin:0;
-    display:inline-block;
+
+.titleBox label {
+    color: #444;
+    margin: 0;
+    display: inline-block;
 }
 
 .commentBox {
-    padding:10px;
-    border-top:1px dotted #bbb;
+    padding: 10px;
+    border-top: 1px dotted #bbb;
 }
-.commentBox .form-group:first-child, .actionBox .form-group:first-child {
-    width:80%;
-}
-.commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
-    width:18%;
-}
+
 .actionBox .form-group * {
-    width:100%;
+    width: 100%;
 }
+
 .taskDescription {
-    margin-top:10px 0;
+    margin-top: 10px 0;
 }
+
 .commentList {
-    padding:0;
-    list-style:none;
-    max-height:200px;
-    overflow:auto;
+    padding: 0;
+    list-style: none;
+    max-height: 200px;
+    overflow: auto;
 }
+
 .commentList li {
-    margin:0;
-    margin-top:10px;
+    margin: 0;
+    margin-top: 10px;
 }
+
 .commentList li > div {
-    display:table-cell;
+    display: table-cell;
 }
+
 .commenterImage {
-    width:50px;
-    margin-right:5px;
-    height:100%;
-    float:left;
+    width: 50px;
+    margin-right: 5px;
+    height: 100%;
+    float: left;
 }
+
 .commenterImage img {
-    width:100%;
-    border-radius:50%;
+    width: 100%;
+    border-radius: 50%;
 }
+
 .commentText p {
-    margin:0;
+    margin: 0;
 }
+
 .sub-text {
-    color:#aaa;
-    font-family:verdana;
-    font-size:11px;
+    color: #aaa;
+    font-family: verdana;
+    font-size: 11px;
 }
+
 .actionBox {
-    border-top:1px dotted #bbb;
-    padding:10px;
+    border-top: 1px dotted #bbb;
+    padding: 10px;
 }
 
 .replyForm {
-    padding-top :10px;
+    padding-top: 10px;
 }
 
 .table-wrapper-scroll-y {
@@ -167,22 +192,32 @@ div.dataTables_wrapper {
     margin: 0 auto;
 }
 
-
 @keyframes float {
     0% {
-        box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+        box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
         transform: translatey(0px);
     }
     50% {
-        box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+        box-shadow: 0 25px 15px 0px rgba(0, 0, 0, 0.2);
         transform: translatey(-10px);
     }
     100% {
-        box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+        box-shadow: 0 5px 15px 0px rgba(0, 0, 0, 0.6);
         transform: translatey(0px);
     }
 }
 
-#notificationUpdate a{
+#notificationUpdate a {
     animation: float 6s ease-in-out infinite;
+}
+
+.bar {
+    height: 18px;
+    background: green;
+}
+
+.tooltip ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }

@@ -39,15 +39,24 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         });
     });
 
-    Route::group(['namespace' => 'Admin', 'middleware' => 'auth:admin'], function () {
+    Route::group(['namespace' => 'Admin', 'middleware' => 'auth', 'prefix' => 'admin'], function () {
         Route::get('/dashboard', 'DashboardController@dashboard')->name('admin.dashboard');
 
-        Route::group(['prefix' => 'photos'], function () {
+        Route::group(['prefix' => 'photo'], function () {
+            Route::post('/upload', 'PhotoAlbumController@upload')->name('admin.photo.upload');
             Route::get('/', 'PhotoController@index')->name('admin.photo.index');
             Route::get('/new', 'PhotoController@new')->name('admin.photo.new');
             Route::post('/new', 'PhotoController@store')->name('admin.photo.new.store');
             Route::get('/edit/{photo}', 'PhotoController@edit')->name('admin.photo.edit');
             Route::post('/edit/{photo}', 'PhotoController@store')->name('admin.photo.new.store');
+
+            Route::group(['prefix' => 'album'], function () {
+                Route::get('/', 'PhotoAlbumController@index')->name('admin.album.index');
+                Route::get('/new', 'PhotoAlbumController@new')->name('admin.album.new');
+                Route::post('/new', 'PhotoAlbumController@store')->name('admin.album.new.store');
+                Route::get('/edit/{photo}', 'PhotoAlbumController@edit')->name('admin.album.edit');
+                Route::post('/edit/{photo}', 'PhotoAlbumController@store')->name('admin.album.new.store');
+            });
         });
     });
                 // Get the Panda group

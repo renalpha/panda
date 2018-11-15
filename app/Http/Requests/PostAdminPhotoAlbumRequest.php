@@ -31,6 +31,7 @@ class PostAdminPhotoAlbumRequest extends FormRequest
         } elsE {
             $rules['name'] = 'required|unique:photo_albums,name';
         }
+        $rules['file'] = 'image|max:10240';
 
         return $rules;
     }

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PostAdminPhotoAlbumRequest;
 use App\Http\Requests\PostAdminPhotoRequest;
+use App\Http\Requests\PostPhotoUploadRequest;
 use Domain\Entities\PhotoAlbum\Photo;
 use Domain\Entities\PhotoAlbum\PhotoAlbum;
 use Domain\Services\PhotoAlbumService;
 use Domain\Services\PhotoService;
+use Domain\Services\UploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -29,10 +31,23 @@ class PhotoAlbumController extends Controller
      */
     protected $albumService;
 
-    public function __construct(PhotoService $photoService, PhotoAlbumService $albumService)
+    /**
+     * @var UploadService
+     */
+    protected $uploadService;
+
+    /**
+     * PhotoAlbumController constructor.
+     *
+     * @param UploadService $uploadService
+     * @param PhotoService $photoService
+     * @param PhotoAlbumService $albumService
+     */
+    public function __construct(UploadService $uploadService, PhotoService $photoService, PhotoAlbumService $albumService)
     {
         $this->photoService = $photoService;
         $this->albumService = $albumService;
+        $this->uploadService = $uploadService;
     }
 
     /**
@@ -81,5 +96,21 @@ class PhotoAlbumController extends Controller
 
         return redirect()
             ->route('admin.photoalbum.index');
+    }
+
+    /**
+     * @param PostPhotoUploadRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function upload(PostPhotoUploadRequest $request)
+    {
+        $photos = [];
+
+        foreach ($request->file('files') as $file) {
+            $photos[] = $this->uploadService->upload($file, $this->uploadService->uploadPhotoPath);
+        }
+
+        return response()
+            ->json(['status' => 'success', 'message' => 'Successfully uploaded file.', 'files' => $photos]);
     }
 }
