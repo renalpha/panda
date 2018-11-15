@@ -16,20 +16,15 @@ use Infrastructure\Repositories\PandaGroupRepository;
  * Class PandaGroupService
  * @package Domain\Services
  */
-class PandaGroupService
+class PandaGroupService extends AbstractService
 {
-    /**
-     * @var PandaGroupRepository $groupRepository
-     */
-    public $groupRepository;
-
     /**
      * PandaGroupService constructor.
      * @param PandaGroupRepository $groupRepository
      */
     public function __construct(PandaGroupRepository $groupRepository)
     {
-        $this->groupRepository = $groupRepository;
+        $this->repository = $groupRepository;
     }
 
     /**
@@ -68,44 +63,16 @@ class PandaGroupService
 
     /**
      * @param array $params
-     * @return PandaGroup
-     */
-    public function createGroup(array $params): PandaGroup
-    {
-        $params['uuid'] = Str::uuid();
-
-        $group = $this->groupRepository->create($params);
-
-        $group->save();
-
-        return $group;
-    }
-
-    /**
-     * @param int $id
-     * @param array $params
-     * @return PandaGroup
-     */
-    public function updateGroup(int $id, array $params): PandaGroup
-    {
-        $group = $this->groupRepository->update($params, $id);
-
-        $group->save();
-
-        return $group;
-    }
-
-    /**
-     * @param array $params
      * @param int|null $id
      * @return PandaGroup
      */
     public function saveGroup(array $params, int $id = null): PandaGroup
     {
         if ($id !== null) {
-            return $this->updateGroup($id, $params);
+            return $this->update($id, $params);
         } else {
-            return $this->createGroup($params);
+            $params['uuid'] = Str::uuid();
+            return $this->create($params);
         }
     }
 
@@ -115,7 +82,7 @@ class PandaGroupService
      */
     public function getGroupByLabel($label)
     {
-        return $this->groupRepository->getGroupByLabel($label)->firstOrFail();
+        return $this->repository->getGroupByLabel($label)->firstOrFail();
     }
 
     /**
@@ -125,7 +92,7 @@ class PandaGroupService
      */
     public function getGroupByLabelAndUuid($label, $uuid)
     {
-        return $this->groupRepository->findByUuid($uuid)->getGroupByLabel($label)->firstOrFail();
+        return $this->repository->findByUuid($uuid)->getGroupByLabel($label)->firstOrFail();
     }
 
     /**
@@ -134,7 +101,7 @@ class PandaGroupService
      */
     public function getGroupByLabelAndAuthenticatedUser($label)
     {
-        $group = $this->groupRepository->getGroupByLabel($label)->firstOrFail();
+        $group = $this->repository->getGroupByLabel($label)->firstOrFail();
 
         if ($group->findUserById(auth()->user()->id) === false) {
             return abort(404);
@@ -148,7 +115,7 @@ class PandaGroupService
      */
     public function groupsByAuthenticatedUser()
     {
-        return $this->groupRepository->groupsByAuthenticatedUser();
+        return $this->repository->groupsByAuthenticatedUser();
     }
 
     /**
@@ -184,7 +151,7 @@ class PandaGroupService
     public function clearPointsByUser(int $userId, Collection $groups): void
     {
         foreach ($groups as $groupUser) {
-            $group = $this->groupRepository->find($groupUser->panda_group_id);
+            $group = $this->repository->find($groupUser->panda_group_id);
             if (isset($group)) {
                 $group->notify(new PandaPointReset($userId, $groupUser->group->id));
             }

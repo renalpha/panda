@@ -46,6 +46,10 @@ class PandaCommentController extends Controller
                 break;
             case 'pandaComment':
                 break;
+            case 'photoAlbumComment':
+                break;
+            case 'photoComment':
+                break;
         }
 
         $request->session()->flash('info', 'Comment posted.');

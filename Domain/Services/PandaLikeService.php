@@ -10,7 +10,7 @@ use Domain\Entities\PandaComment\PandaComment;
  *
  * @package Domain\Services
  */
-class PandaLikeService
+class PandaLikeService extends AbstractService
 {
     /**
      * @var array

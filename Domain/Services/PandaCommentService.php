@@ -9,20 +9,15 @@ use Infrastructure\Repositories\PandaCommentRepository;
  * Class PandaCommentService
  * @package Domain\Services
  */
-class PandaCommentService
+class PandaCommentService extends AbstractService
 {
-    /**
-     * @var PandaCommentRepository
-     */
-    protected $commentRepository;
-
     /**
      * PandaCommentService constructor.
      * @param PandaCommentRepository $commentRepository
      */
     public function __construct(PandaCommentRepository $commentRepository)
     {
-        $this->commentRepository = $commentRepository;
+        $this->repository = $commentRepository;
     }
 
     /**
@@ -32,7 +27,7 @@ class PandaCommentService
      */
     public function commentSubjectByTypeAndId($type, string $id, array $data)
     {
-        $comment = $this->commentRepository->create([
+        $comment = $this->repository->create([
             'commentable_id' => $id,
             'commentable_type' => get_class($type),
             'user_id' => auth()->user()->id,

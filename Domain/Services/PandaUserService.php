@@ -9,20 +9,15 @@ use Infrastructure\Repositories\PandaUserRepository;
  *
  * @package Domain\Services
  */
-class PandaUserService
+class PandaUserService extends AbstractService
 {
-    /**
-     * @var PandaUserRepository
-     */
-    protected $userRepository;
-
     /**
      * PandaUserService constructor.
      * @param PandaUserRepository $userRepository
      */
     public function __construct(PandaUserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
+        $this->repository = $userRepository;
     }
 
     /**
@@ -33,7 +28,7 @@ class PandaUserService
     public function findGroupsByUserId(int $userId)
     {
         try {
-            $user = $this->userRepository->where('id', '=', $userId)->first();
+            $user = $this->repository->where('id', '=', $userId)->first();
             return $user->groups ?? null;
         } catch (\Exception $e) {
             throw new \Exception('Could not find user by id: ' . $userId);
