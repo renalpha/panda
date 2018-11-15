@@ -57,7 +57,52 @@ class PhotoAlbumController extends Controller
      */
     public function index(Request $request, $album = null): View
     {
-        return view('admin.photo.index');
+        return view('admin.photo.album.index');
+    }
+
+    /**
+     * @param Request $request
+     * @param PhotoAlbum|null $album
+     * @return \Illuminate\Contracts\View\Factory|View
+     */
+    public function createAlbum(Request $request, PhotoAlbum $album = null)
+    {
+        return view('admin.photo.album.new', ['album' => $album ?? null, 'albumOptions' => $this->albumService->repository->get()]);
+    }
+
+    /**
+     * @param Request $request
+     * @param PhotoAlbum $album
+     * @return \Illuminate\Contracts\View\Factory|View
+     */
+    public function editAlbum(Request $request, PhotoAlbum $album)
+    {
+        return view('admin.photo.album.new', [
+            'album' => $album,
+            'albumOptions' => $this->albumService->repository
+                ->where('id', '!=', $album->id ?? null)
+                ->get(),
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @param PhotoAlbum $album
+     * @return \Illuminate\Contracts\View\Factory|View
+     */
+    public function createPhoto(Request $request, PhotoAlbum $album)
+    {
+        return view('admin.photo.photo.new', ['album' => $album]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Photo $photo
+     * @return \Illuminate\Contracts\View\Factory|View
+     */
+    public function editPhoto(Request $request, Photo $photo)
+    {
+        return view('admin.photo.photo.edit', ['photo' => $photo]);
     }
 
     /**
@@ -67,7 +112,15 @@ class PhotoAlbumController extends Controller
      */
     public function storeAlbum(PostAdminPhotoAlbumRequest $request, PhotoAlbum $album = null): RedirectResponse
     {
-        $this->statusMessage = isset($album->id) && $album->id !== null ? 'Album has successfully been updated!' : 'Album has successfully been created!';
+        $photoAlbum = $this->albumService->saveAlbum([
+            'name' => $request->name,
+            'label' => str_slug($request->name),
+            'parent_id' => $request->parent_id,
+            'description' => $request->description,
+            'file' => isset($request->file) ? $this->uploadService->upload($request->file, $this->uploadService->uploadPhotoPath)->name : null,
+        ], $photoAlbum->id ?? null);
+
+        $this->statusMessage = isset($photoAlbum->id) && $photoAlbum->id !== null ? 'Album has successfully been updated!' : 'Album has successfully been created!';
 
         if ($request->wantsJson() === true) {
             return json_encode(['status' => 'success', 'message' => $this->statusMessage]);

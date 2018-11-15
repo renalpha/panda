@@ -10,7 +10,7 @@
                     <div class="card-body">
                         @include('layouts.partials._status_messages')
 
-                        <a href="{{ route('group.new') }}" class="btn btn-primary float-right">Create Album</a>
+                        <a href="{{ route('admin.album.new') }}" class="btn btn-primary float-right">Create Album</a>
                         <div class="clearfix"></div>
 
                         <hr/>

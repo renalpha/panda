@@ -24,6 +24,7 @@ class CreatePhotoAndPhotoAlbumTables extends Migration
             $table->string('label', 255)->index();
             $table->string('file', 255)->nullable();
             $table->text('description')->nullable();
+            $table->timestamps();
         });
 
         Schema::create('photos', function (Blueprint $table) {
@@ -34,6 +35,7 @@ class CreatePhotoAndPhotoAlbumTables extends Migration
             $table->text('description')->nullable();
             $table->string('file_name', 255)->nullable()->index();
             $table->string('file', 255);
+            $table->timestamps();
         });
     }
 

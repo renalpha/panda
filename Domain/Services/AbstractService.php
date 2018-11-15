@@ -13,7 +13,7 @@ abstract class AbstractService
     /**
      * @var AbstractRepository
      */
-    protected $repository;
+    public $repository;
 
     /**
      * @param array $params

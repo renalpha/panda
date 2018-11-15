@@ -10,5 +10,5 @@ use Domain\Common\AggregateRoot;
  */
 class PhotoAlbum extends AggregateRoot
 {
-
+    protected $fillable = ['name', 'label', 'file', 'description', 'uuid'];
 }
