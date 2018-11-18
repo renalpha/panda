@@ -52,12 +52,20 @@ class PhotoAlbumController extends Controller
 
     /**
      * @param Request $request
-     * @param null $album
+     * @param $photoAlbum
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index(Request $request, $album = null): View
+    public function index(Request $request, PhotoAlbum $photoAlbum = null): View
     {
-        return view('admin.photo.album.index');
+        if (isset($photoAlbum)) {
+            $albums = $photoAlbum->albums;
+            $photos = $photoAlbum->photos;
+        } else {
+            // override albums if we have a album selected
+            $albums = $this->albumService->getAlbums();
+        }
+
+        return view('admin.photo.album.index', ['album' => $photoAlbum, 'albums' => $albums, 'photos' => $photos ?? null]);
     }
 
     /**
@@ -112,12 +120,16 @@ class PhotoAlbumController extends Controller
      */
     public function storeAlbum(PostAdminPhotoAlbumRequest $request, PhotoAlbum $album = null): RedirectResponse
     {
+        $file = isset($request->file) ? $this->uploadService->upload($request->file, $this->uploadService->uploadPhotoPath) : null;
+
+        isset($file) ? $this->uploadService->resizeImage($file->file_path, $file->filename) : null;
+
         $photoAlbum = $this->albumService->saveAlbum([
             'name' => $request->name,
             'label' => str_slug($request->name),
             'parent_id' => $request->parent_id,
             'description' => $request->description,
-            'file' => isset($request->file) ? $this->uploadService->upload($request->file, $this->uploadService->uploadPhotoPath)->name : null,
+            'file' => $file->filename ?? null,
         ], $photoAlbum->id ?? null);
 
         $this->statusMessage = isset($photoAlbum->id) && $photoAlbum->id !== null ? 'Album has successfully been updated!' : 'Album has successfully been created!';
@@ -160,7 +172,15 @@ class PhotoAlbumController extends Controller
         $photos = [];
 
         foreach ($request->file('files') as $file) {
-            $photos[] = $this->uploadService->upload($file, $this->uploadService->uploadPhotoPath);
+            $file = $this->uploadService->upload($file, $this->uploadService->uploadPhotoPath);
+            $photos[] = $file->filename;
+
+            isset($file) ? $this->uploadService->resizeImage($file->file_path, $file->filename) : null;
+
+            $photo = $this->photoService->savePhoto([
+                'album_id' => $request->album_id,
+                'file' => $file->filename ?? null,
+            ], $photo->id ?? null);
         }
 
         return response()

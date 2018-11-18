@@ -21,6 +21,14 @@ class PhotoAlbumService extends AbstractService
     }
 
     /**
+     * @return mixed
+     */
+    public function getAlbums()
+    {
+        return $this->repository->whereNull('parent_id')->get();
+    }
+
+    /**
      * @param array $params
      * @param int|null $id
      * @return mixed

@@ -5,5 +5,5 @@
  */
 return [
     // Photo upload path.
-    'photo_uploads' => 'uploads/photos',
+    'photo_uploads' => 'public/uploads/photos',
 ];

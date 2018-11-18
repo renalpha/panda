@@ -45,11 +45,12 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         Route::group(['prefix' => 'photo'], function () {
 
             Route::group(['prefix' => 'album'], function () {
-                Route::get('/', 'PhotoAlbumController@index')->name('admin.album.index');
                 Route::get('/new', 'PhotoAlbumController@createAlbum')->name('admin.album.new');
                 Route::post('/new', 'PhotoAlbumController@storeAlbum')->name('admin.album.new.store');
-                Route::get('/edit/{photo}', 'PhotoAlbumController@editAlbum')->name('admin.album.edit');
-                Route::post('/edit/{photo}', 'PhotoAlbumController@storeAlbum')->name('admin.album.edit.store');
+                Route::get('/edit/{photoAlbum}', 'PhotoAlbumController@editAlbum')->name('admin.album.edit');
+                Route::post('/edit/{photoAlbum}', 'PhotoAlbumController@storeAlbum')->name('admin.album.edit.store');
+
+                Route::get('/{photoAlbum?}', 'PhotoAlbumController@index')->name('admin.album.index');
             });
 
             Route::get('/new', 'PhotoAlbumController@newPhoto')->name('admin.photo.new');

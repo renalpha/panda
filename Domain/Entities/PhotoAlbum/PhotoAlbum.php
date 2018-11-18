@@ -3,6 +3,7 @@
 namespace Domain\Entities\PhotoAlbum;
 
 use Domain\Common\AggregateRoot;
+use Domain\Common\EntityFilesTrait;
 
 /**
  * Class PhotoAlbum
@@ -10,5 +11,26 @@ use Domain\Common\AggregateRoot;
  */
 class PhotoAlbum extends AggregateRoot
 {
-    protected $fillable = ['name', 'label', 'file', 'description', 'uuid'];
+    use EntityFilesTrait;
+
+    /**
+     * @var array
+     */
+    protected $fillable = ['name', 'label', 'file', 'description', 'uuid', 'parent_id'];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function albums()
+    {
+        return $this->hasMany(new PhotoAlbum(), 'parent_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function photos()
+    {
+        return $this->hasMany(new Photo(), 'album_id', 'id');
+    }
 }
