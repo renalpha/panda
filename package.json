@@ -20,9 +20,12 @@
     "vue": "^2.5.7"
   },
   "dependencies": {
+    "blueimp-file-upload": "^9.28.0",
     "datatables.net-bs4": "^1.10.19",
     "font-awesome": "^4.7.0",
+    "jquery-ui": "^1.12.1",
     "laravel-echo": "^1.4.1",
+    "lightbox2": "^2.10.0",
     "pusher-js": "^4.3.1"
   }
 }
