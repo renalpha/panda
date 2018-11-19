@@ -15,7 +15,7 @@ class UploadService extends AbstractService
     /**
      * @var array
      */
-    protected $imageSizes = ['180', '360', '720', '960'];
+    public $imageSizes = ['180', '360', '720', '960'];
 
     /**
      * @var

@@ -17,7 +17,7 @@ use Laravel\Passport\HasApiTokens;
  */
 class User extends Authenticatable implements MustVerifyEmail, LikerContract
 {
-    use Notifiable, HasRolesTrait, PandaUserTrait, Liker, HasApiTokens;
+    use Notifiable, PandaUserTrait, Liker, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.

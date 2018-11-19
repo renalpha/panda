@@ -41,4 +41,19 @@ abstract class AbstractService
 
         return $entity;
     }
+
+    /**
+     * @param int $id
+     */
+    public function remove(int $id) {
+        $this->delete($id);
+    }
+
+    /**
+     * @param int $id
+     */
+    public function delete(int $id)
+    {
+        $this->repository->delete($id);
+    }
 }

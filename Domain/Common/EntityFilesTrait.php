@@ -15,4 +15,20 @@ trait EntityFilesTrait
     {
         return '/storage/uploads/photos/' . $this->file;
     }
+
+    /**
+     * @return mixed
+     */
+    public function children()
+    {
+        return $this->hasMany($this, 'id', 'parent_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function allChildren()
+    {
+        return $this->children()->with('allChildren');
+    }
 }

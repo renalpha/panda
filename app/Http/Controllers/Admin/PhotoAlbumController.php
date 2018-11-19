@@ -58,14 +58,14 @@ class PhotoAlbumController extends Controller
     public function index(Request $request, PhotoAlbum $photoAlbum = null): View
     {
         if (isset($photoAlbum)) {
-            $albums = $photoAlbum->albums;
+            $subAlbums = $photoAlbum->albums;
             $photos = $photoAlbum->photos;
         } else {
             // override albums if we have a album selected
-            $albums = $this->albumService->getAlbums();
+            $subAlbums = $this->albumService->getAlbums();
         }
 
-        return view('admin.photo.album.index', ['album' => $photoAlbum, 'albums' => $albums, 'photos' => $photos ?? null]);
+        return view('admin.photo.album.index', ['album' => $photoAlbum, 'subAlbums' => $subAlbums, 'photos' => $photos ?? null]);
     }
 
     /**
@@ -185,5 +185,42 @@ class PhotoAlbumController extends Controller
 
         return response()
             ->json(['status' => 'success', 'message' => 'Successfully uploaded file.', 'files' => $photos]);
+    }
+
+    /**
+     * @param Request $request
+     * @param Photo $photo
+     * @return RedirectResponse
+     */
+    public function removePhoto(Request $request, Photo $photo)
+    {
+        $this->photoService->delete($photo->id);
+
+        $this->statusMessage = 'Photo has successfully been removed!';
+
+        $request->session()->flash('status', $this->statusMessage);
+
+        return redirect()
+            ->back();
+    }
+
+    public function removeAlbum(Request $request, PhotoAlbum $album)
+    {
+        foreach($album->photos as $photo) {
+            $this->photoService->delete($photo->id);
+        }
+
+        foreach($album->albums as $subAlbum) {
+            $this->albumService->delete($subAlbum->id);
+        }
+
+        $this->albumService->delete($album->id);
+
+        $this->statusMessage = 'Photo has successfully been removed!';
+
+        $request->session()->flash('status', $this->statusMessage);
+
+        return redirect()
+            ->back();
     }
 }

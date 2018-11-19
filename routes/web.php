@@ -39,7 +39,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
         });
     });
 
-    Route::group(['namespace' => 'Admin', 'middleware' => 'auth', 'prefix' => 'admin'], function () {
+    Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::get('/dashboard', 'DashboardController@dashboard')->name('admin.dashboard');
 
         Route::group(['prefix' => 'photo'], function () {
@@ -49,7 +49,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
                 Route::post('/new', 'PhotoAlbumController@storeAlbum')->name('admin.album.new.store');
                 Route::get('/edit/{photoAlbum}', 'PhotoAlbumController@editAlbum')->name('admin.album.edit');
                 Route::post('/edit/{photoAlbum}', 'PhotoAlbumController@storeAlbum')->name('admin.album.edit.store');
-
+                Route::get('/remove/{photoAlbum}', 'PhotoAlbumController@removeAlbum')->name('admin.album.remove');
                 Route::get('/{photoAlbum?}', 'PhotoAlbumController@index')->name('admin.album.index');
             });
 
@@ -57,11 +57,13 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
             Route::post('/new', 'PhotoAlbumController@storePhoto')->name('admin.photo.new.store');
             Route::get('/edit/{photo}', 'PhotoAlbumController@editPhoto')->name('admin.photo.edit');
             Route::post('/edit/{photo}', 'PhotoAlbumController@storePhoto')->name('admin.photo.new.store');
-
+            Route::get('/remove/{photo}', 'PhotoAlbumController@removePhoto')->name('admin.photo.remove');
             Route::post('/upload', 'PhotoAlbumController@upload')->name('admin.photo.upload');
+
+
         });
     });
-                // Get the Panda group
+    // Get the Panda group
     Route::group(['namespace' => 'Panda', 'prefix' => 'group'], function () {
         Route::get('index', 'PandaGroupController@index')->name('group.index');
         Route::get('new', 'PandaGroupController@create')->name('group.new');

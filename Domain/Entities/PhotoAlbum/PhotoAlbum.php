@@ -16,6 +16,11 @@ class PhotoAlbum extends AggregateRoot
     /**
      * @var array
      */
+    protected $with = ['allChildren'];
+
+    /**
+     * @var array
+     */
     protected $fillable = ['name', 'label', 'file', 'description', 'uuid', 'parent_id'];
 
     /**
@@ -23,7 +28,7 @@ class PhotoAlbum extends AggregateRoot
      */
     public function albums()
     {
-        return $this->hasMany(new PhotoAlbum(), 'parent_id', 'id');
+        return $this->hasMany($this, 'parent_id', 'id');
     }
 
     /**

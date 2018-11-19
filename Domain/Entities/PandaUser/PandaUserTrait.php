@@ -2,6 +2,7 @@
 
 namespace Domain\Entities\PandaUser;
 
+use App\Models\HasRolesTrait;
 use Domain\Entities\PandaComment\PandaCommentTrait;
 use Vinkla\Hashids\Facades\Hashids;
 
@@ -11,7 +12,7 @@ use Vinkla\Hashids\Facades\Hashids;
  */
 trait PandaUserTrait
 {
-    use PandaCommentTrait;
+    use HasRolesTrait, PandaCommentTrait;
 
     /**
      * Get ecnrypted userID.
@@ -49,5 +50,13 @@ trait PandaUserTrait
     public function receivesBroadcastNotificationsOn(): string
     {
         return 'users.' . $this->id;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return $this->hasRole('administrator');
     }
 }

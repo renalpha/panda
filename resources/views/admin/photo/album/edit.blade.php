@@ -1,5 +1,16 @@
 @extends('layouts.app')
 
+@section('breadcrumb')
+    <li class="breadcrumb-item"><a href="/admin/photo/album">Photos</a></li>
+    @if(isset($album))
+        @foreach($album->allChildren as $child)
+            <li class="breadcrumb-item"><a href="/admin/photo/album/{{ $child->label }}">{{ $child->name }}</a></li>
+        @endforeach
+        <li class="breadcrumb-item">{{ $album->name }}</li>
+    @endif
+@stop
+
+
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
