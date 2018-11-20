@@ -16,6 +16,11 @@ if (env('APP_ENV') === 'production') {
 }
 
 Route::get('/', 'HomeController@index');
+
+Route::get('/offline', function () {
+    return view('offline');
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/invite/group/{label}/code/{code}', 'Panda\PandaGroupController@invite')->name('group.invite');
