@@ -8,7 +8,12 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
             console.log('Service Worker is registered', swReg);
 
             swRegistration = swReg;
-            //showNotification();
+
+            $(document).keypress(function(e) {
+                if(e.which == 13) {
+                    alert('You pressed enter!');
+                }
+            });
         })
         .catch(function(error) {
             console.error('Service Worker Error', error);
