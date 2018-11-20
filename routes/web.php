@@ -40,6 +40,7 @@ Route::group(['middleware' => ['verified', 'auth']], function () {
     });
 
     Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admin'], function () {
+
         Route::get('/dashboard', 'DashboardController@dashboard')->name('admin.dashboard');
 
         Route::group(['prefix' => 'photo'], function () {
