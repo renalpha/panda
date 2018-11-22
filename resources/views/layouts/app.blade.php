@@ -18,9 +18,9 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-    @stack('headerScripts')
+@stack('headerScripts')
 
-    <!-- Fonts -->
+<!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
@@ -96,7 +96,21 @@
                 </div>
             </div>
         </div>
-        @yield('content')
+
+        @if(request()->is('admin/*'))
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3">
+                        @include('layouts.admin.partials._sidebar')
+                    </div>
+                    <div class="col-lg-9">
+                        @yield('content')
+                    </div>
+                </div>
+            </div>
+        @else
+            @yield('content')
+        @endif
     </main>
 </div>
 @stack('scripts')

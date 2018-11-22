@@ -221,3 +221,29 @@ div.dataTables_wrapper {
     padding: 0;
     margin: 0;
 }
+
+.list-group {
+    padding-top: 0px;
+}
+
+.lead {
+
+    margin: auto;
+    left: 0;
+    right: 0;
+    padding-top: 10%;
+}
+
+.profile-sidebar ul {
+    list-style-type: none;
+}
+
+.profile-sidebar ul li:hover .submenu {
+    display:block;
+}
+
+.profile-sidebar .submenu {
+    list-style-type: none;
+    padding: 0;
+    display: none;
+}

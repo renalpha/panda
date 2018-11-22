@@ -1,26 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Photo Albums</div>
+    <div class="card">
+        <div class="card-header">Photo Albums</div>
 
-                    <div class="card-body">
-                        @include('layouts.partials._status_messages')
-                        <h4>Create new album</h4>
-                        <div class="clearfix"></div>
+        <div class="card-body">
+            @include('layouts.partials._status_messages')
+            <h4>Create new album</h4>
+            <div class="clearfix"></div>
 
-                        <hr/>
+            <hr/>
 
-                        <form method="post" action="{{ route('admin.album.new.store') }}" enctype="multipart/form-data">
-                            @include('admin.photo.album.partials._form')
-                        </form>
+            <form method="post" action="{{ route('admin.album.new.store') }}" enctype="multipart/form-data">
+                @include('admin.photo.album.partials._form')
+            </form>
 
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection
@@ -30,7 +24,7 @@
         $(function () {
             $('#fileupload').fileupload({
                 dataType: 'json',
-                beforeSend: function(xhr, data) {
+                beforeSend: function (xhr, data) {
                     xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
                 },
                 progressall: function (e, data) {

@@ -11,7 +11,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
             $(document).keypress(function(e) {
                 if(e.which == 13) {
-                    showNotification();
+                    //showNotification();
                 }
             });
         })
@@ -28,7 +28,7 @@ function showNotification() {
     Notification.requestPermission(function(result) {
         console.log(result);
         if (result === 'granted') {
-            navigator.serviceWorker.register('/js/ServiceWorker.js')
+            navigator.serviceWorker.register('/js/service-worker.js')
                 .then(function(registration) {
 
                 registration.showNotification('Vibration Sample', {
