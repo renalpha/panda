@@ -46,6 +46,9 @@ class PostAdminPhotoAlbumRequest extends FormRequest
         if (isset($this->pandaGroup)) {
             $input['label'] = str_slug($this->name);
         }
+        $input['name'] = strip_tags($this->name);
+        $input['description'] = strip_tags($this->description);
+
         $this->replace($input);
     }
 }

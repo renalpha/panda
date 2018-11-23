@@ -27,4 +27,17 @@ class PostAdminPhotoRequest extends FormRequest
 
         return $rules;
     }
+
+    /**
+     * Prepare for validation.
+     */
+    public function prepareForValidation()
+    {
+        $input = array_map('trim', $this->all());
+
+        $input['name'] = strip_tags($this->name);
+        $input['description'] = strip_tags($this->description);
+
+        $this->replace($input);
+    }
 }
