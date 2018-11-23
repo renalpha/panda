@@ -27,4 +27,16 @@ class PostCommentRequest extends FormRequest
             'comment' => 'required',
         ];
     }
+
+    /**
+     * Prepare for validation.
+     */
+    public function prepareForValidation()
+    {
+        $input = array_map('trim', $this->all());
+
+        $input['comment'] = strip_tags($this->comment);
+
+        $this->replace($input);
+    }
 }
